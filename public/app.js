@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lgpToken = localStorage.getItem('lgp_token');
     const lgpUser = JSON.parse(localStorage.getItem('lgp_user') || 'null');
     if (!lgpToken) {
-        window.location.href = '/login.html';
+        window.location.href = '/login';
         return;
     }
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.status === 401) {
                 localStorage.removeItem('lgp_token');
                 localStorage.removeItem('lgp_user');
-                window.location.href = '/login.html';
+                window.location.href = '/login';
             }
             return res;
         });
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await fetch('/api/auth/logout', { method: 'POST' });
             localStorage.removeItem('lgp_token');
             localStorage.removeItem('lgp_user');
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         });
     }
     // ── END AUTH ────────────────────────────────────────────────

@@ -121,6 +121,23 @@ function requireAuth(req, res, next) {
     }
 }
 
+function requirePageAuth(req, res, next) {
+    let token = null;
+    if (req.cookies && req.cookies.lgp_token) {
+        token = req.cookies.lgp_token;
+    }
+    if (!token) {
+        return res.redirect('/login');
+    }
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = decoded;
+        next();
+    } catch (err) {
+        return res.redirect('/login');
+    }
+}
+
 function requireAdmin(req, res, next) {
     requireAuth(req, res, () => {
         if (req.user && req.user.role === 'admin') {
@@ -131,4 +148,4 @@ function requireAdmin(req, res, next) {
     });
 }
 
-module.exports = { registerUser, loginUser, requireAuth, requireAdmin, findUserById, findUserByReferralCode, loadUsers, saveUsers, JWT_SECRET };
+module.exports = { registerUser, loginUser, requireAuth, requirePageAuth, requireAdmin, findUserById, findUserByReferralCode, loadUsers, saveUsers, JWT_SECRET };

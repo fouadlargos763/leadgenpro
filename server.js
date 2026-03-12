@@ -11,7 +11,7 @@ const { generateEmailContent, sendFollowUpEmail, sendOutreachEmail } = require('
 const { generatePersonalizedHook } = require('./src/aiPersonalizer');
 const { generateLeadInsight, optimizeEmail } = require('./src/aiInsights');
 const { analyzeWebsite } = require('./src/websiteAnalyzer');
-const { registerUser, loginUser, requireAuth, requireAdmin, loadUsers, saveUsers } = require('./src/auth');
+const { registerUser, loginUser, requireAuth, requirePageAuth, requireAdmin, loadUsers, saveUsers } = require('./src/auth');
 const { createCheckoutSession, handleWebhookEvent, getPlanLimits, cancelSubscription, getSubscription, setSubscription, PLANS } = require('./src/billing');
 const { incrementUsage, getUsage } = require('./src/usage');
 const { trackEvent, getAnalyticsMetrics, getRevenueMetrics } = require('./src/analytics');
@@ -71,6 +71,21 @@ app.use(requestTimer);        // X-Response-Time header + slow-request warnings
 
 app.use(express.json());
 app.use(cookieParser());
+
+// Protected UI Routes
+app.get('/dashboard', requirePageAuth, (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
+});
+
+// Auth UI routes
+app.get('/login', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
+app.get('/signup', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'register.html'));
+});
+
 app.use(express.static('public'));
 
 /**

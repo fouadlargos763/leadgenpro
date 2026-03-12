@@ -250,7 +250,7 @@
             try {
                 const res = await fetch('/api/auth/me');
                 if (!res.ok) {
-                    window.location.href = '/login.html';
+                    window.location.href = '/login';
                     return;
                 }
                 const data = await res.json();
@@ -258,7 +258,7 @@
                 document.getElementById('user-email').textContent = data.user.email;
                 document.getElementById('user-avatar').textContent = data.user.name.charAt(0).toUpperCase();
             } catch (err) {
-                window.location.href = '/login.html';
+                window.location.href = '/login';
             }
         }
 
@@ -291,7 +291,7 @@
         // Logout
         document.getElementById('btn-logout').addEventListener('click', async () => {
             await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         });
 
         checkAuth();

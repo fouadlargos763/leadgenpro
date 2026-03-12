@@ -242,7 +242,7 @@
             try {
                 // Auth check & profile
                 const authRes = await fetch('/api/auth/me');
-                if (!authRes.ok) return window.location.href = '/login.html';
+                if (!authRes.ok) return window.location.href = '/login';
                 const userData = await authRes.json();
                 document.getElementById('user-name').textContent = userData.user.name;
                 document.getElementById('user-email').textContent = userData.user.email;
@@ -301,7 +301,7 @@
         // Logout
         document.getElementById('btn-logout').addEventListener('click', async () => {
             await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login.html';
+            window.location.href = '/login';
         });
 
         fetchBilling();
