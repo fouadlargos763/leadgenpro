@@ -307,22 +307,26 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-back-2').addEventListener('click', () => goToStep(2));
 
     document.getElementById('btn-finish').addEventListener('click', (e) => {
-        const businessType = document.getElementById('businessType').value;
-        const industry = document.getElementById('industry').value;
-        const locationTarget = document.getElementById('location').value;
+        try {
+            const businessType = document.getElementById('businessType').value;
+            const industry = document.getElementById('industry').value;
+            const locationTarget = document.getElementById('location').value;
 
-        // Save temporarily in localStorage
-        const setupData = { businessType, industry, locationTarget };
-        localStorage.setItem('lgp_setup_config', JSON.stringify(setupData));
-        localStorage.setItem('lgp_onboarded', 'true');
+            // Save temporarily in localStorage
+            const setupData = { businessType, industry, locationTarget };
+            localStorage.setItem('lgp_setup_config', JSON.stringify(setupData));
+            localStorage.setItem('lgp_onboarded', 'true');
 
-        const btn = e.currentTarget || document.getElementById('btn-finish');
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Finalizing...';
-        btn.disabled = true;
+            const btn = e.currentTarget || document.getElementById('btn-finish');
+            btn.innerHTML = 'Finalizing...';
+            btn.disabled = true;
 
-        setTimeout(() => {
+            // Force immediate redirect
             window.location.href = '/dashboard';
-        }, 800);
+        } catch (error) {
+            console.error('Setup finalization error:', error);
+            window.location.href = '/dashboard';
+        }
     });
 });
 </script>
