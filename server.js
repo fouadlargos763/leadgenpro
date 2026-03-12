@@ -44,7 +44,7 @@ app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), async
     const sig = req.headers['stripe-signature'];
     try {
         const result = await handleWebhookEvent(req.body, sig);
-        res.json(result);
+        return res.json(result);
     } catch (err) {
         console.error(`[Webhook Error] ${err.message}`);
         res.status(400).send(`Webhook Error: ${err.message}`);
@@ -114,7 +114,7 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
         logAuthAttempt(req, true, 'login');
-        res.json({ token, user });
+        return res.json({ token, user });
     } catch (err) {
         logAuthAttempt(req, false, `login failed: ${err.message}`);
         res.status(401).json({ error: err.message });
@@ -126,14 +126,14 @@ app.post('/api/auth/login', authLimiter, async (req, res) => {
  */
 app.post('/api/auth/logout', (req, res) => {
     res.clearCookie('lgp_token');
-    res.json({ success: true });
+    return res.json({ success: true });
 });
 
 /**
  * AUTH: Get current user
  */
 app.get('/api/auth/me', requireAuth, (req, res) => {
-    res.json({ user: req.user });
+    return res.json({ user: req.user });
 });
 
 /**
@@ -147,7 +147,7 @@ app.post('/api/create-checkout-session', requireAuth, subscriptionLimiter, async
     try {
         const session = await createCheckoutSession(req.user.id, req.user.email, plan);
         logSubscriptionEvent(req.user.id, 'checkout_session_created', { plan });
-        res.json({ url: session.url });
+        return res.json({ url: session.url });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -178,7 +178,7 @@ app.post('/api/cancel-subscription', requireAuth, subscriptionLimiter, async (re
     try {
         await cancelSubscription(req.user.id);
         logSubscriptionEvent(req.user.id, 'subscription_canceled', { manual: true });
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -215,7 +215,7 @@ app.get('/api/admin/users', requireAdmin, (req, res) => {
         }, 0)
     };
 
-    res.json({ users: adminData, stats });
+    return res.json({ users: adminData, stats });
 });
 
 /**
@@ -229,7 +229,7 @@ app.post('/api/admin/update-subscription', requireAdmin, (req, res) => {
         setSubscription(userId, { plan, status: status || 'active' });
         trackEvent(userId, 'plan_upgrade', { fromAdmin: true, newPlan: plan });
         console.log(`[ADMIN ACTION] User ${userId} plan manually set to ${plan} by admin ${req.user.id}`);
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -254,7 +254,7 @@ app.post('/api/waitlist', (req, res) => {
 
     waitlist.push({ email, timestamp: new Date().toISOString() });
     fs.writeFileSync(WAITLIST_PATH, JSON.stringify(waitlist, null, 2));
-    res.json({ success: true });
+    return res.json({ success: true });
 });
 
 /**
@@ -263,7 +263,7 @@ app.post('/api/waitlist', (req, res) => {
 app.get('/api/admin/waitlist', requireAdmin, (req, res) => {
     if (!fs.existsSync(WAITLIST_PATH)) return res.json({ waitlist: [] });
     const waitlist = JSON.parse(fs.readFileSync(WAITLIST_PATH, 'utf8'));
-    res.json({ waitlist: waitlist.reverse() });
+    return res.json({ waitlist: waitlist.reverse() });
 });
 
 /**
@@ -271,7 +271,7 @@ app.get('/api/admin/waitlist', requireAdmin, (req, res) => {
  */
 app.get('/api/admin/analytics', requireAdmin, (req, res) => {
     const metrics = getAnalyticsMetrics();
-    res.json(metrics);
+    return res.json(metrics);
 });
 
 /**
@@ -279,7 +279,7 @@ app.get('/api/admin/analytics', requireAdmin, (req, res) => {
  */
 app.get('/api/admin/revenue', requireAdmin, (req, res) => {
     const metrics = getRevenueMetrics();
-    res.json(metrics);
+    return res.json(metrics);
 });
 
 /**
@@ -300,7 +300,7 @@ app.get('/api/admin/referrals', requireAdmin, (req, res) => {
             refereeEmail: referee ? referee.email : ''
         };
     });
-    res.json(enriched);
+    return res.json(enriched);
 });
 
 /**
@@ -361,7 +361,7 @@ app.post('/api/referral/invite', requireAuth, inviteLimiter, async (req, res) =>
         console.log(`[MOCK EMAIL] To: ${email} | Subject: Join LeadGenPro | Body: Hey, join me on LeadGenPro using my link: ${referralLink}`);
     });
 
-    res.json({ message: `Successfully sent ${validEmails.length} invites!` });
+    return res.json({ message: `Successfully sent ${validEmails.length} invites!` });
 });
 
 /**
@@ -499,7 +499,7 @@ app.get('/api/campaigns', requireAuth, (req, res) => {
     const files = fs.readdirSync(userDir)
         .filter(f => f.startsWith('enriched_leads_'))
         .sort().reverse();
-    res.json({ campaigns: files });
+    return res.json({ campaigns: files });
 });
 
 /**
@@ -537,7 +537,7 @@ app.get('/api/campaign-stats', requireAuth,
         if (sent > 0 && sent >= total) status = 'Completed';
         return { name, file, total, sent, opens, openRate: sent > 0 ? Math.round((opens / sent) * 100) : 0, status };
     });
-    res.json({ campaigns });
+    return res.json({ campaigns });
 });
 
 /**
@@ -587,7 +587,7 @@ app.get('/api/leads', requireAuth, leadsLimiter,
             };
         }).sort((a, b) => b.score - a.score);
 
-        res.json({ leads: leadsWithIdsAndScores, stats });
+        return res.json({ leads: leadsWithIdsAndScores, stats });
     } catch (error) {
         res.status(500).json({ error: 'Failed to read data file' });
     }
@@ -623,7 +623,7 @@ app.post('/api/email-optimize', requireAuth, aiLimiter, async (req, res) => {
 
     try {
         const result = await optimizeEmail(emailDraft, lead);
-        res.json(result);
+        return res.json(result);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -670,7 +670,7 @@ app.post('/api/leads/status', requireAuth, (req, res) => {
         });
         fs.writeFileSync(targetPath, JSON.stringify(updatedLeads, null, 2));
         invalidateUserCache(uid); // bust stale leads cache
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update status' });
     }
@@ -785,7 +785,7 @@ app.post('/api/action', requireAuth, leadsLimiter, deduplicateSearch, (req, res)
         // Release the in-flight deduplicate lock
         releaseSearch(req._dedupeKey);
         res.write(`\n>>> Action completed with code ${code} <<<\n`);
-        res.end();
+        return res.end();
     });
 });
 
@@ -813,7 +813,7 @@ app.post('/api/preview', requireAuth, async (req, res) => {
         }
     }
     const content = generateEmailContent(lead, campaign || 'default', uid);
-    res.json(content);
+    return res.json(content);
 });
 
 /**
@@ -836,7 +836,7 @@ app.post('/api/analyze', requireAuth, async (req, res) => {
             }
         } catch (err) { console.error('Failed to save website analysis:', err); }
     }
-    res.json(analysis);
+    return res.json(analysis);
 });
 
 /**
@@ -876,7 +876,7 @@ app.post('/api/analyze-bulk', requireAuth, async (req, res) => {
     } catch (err) {
         res.write(`[Error] ${err.message}\n`);
     }
-    res.end();
+    return res.end();
 });
 
 /**
@@ -900,7 +900,7 @@ app.get('/track/open', (req, res) => {
         'Content-Type': 'image/gif',
         'Content-Length': buf.length
     });
-    res.end(buf);
+    return res.end(buf);
 });
 
 /**
@@ -922,7 +922,7 @@ app.get('/track/click', (req, res) => {
     }
 
     // Redirect user to original URL
-    res.redirect(url || '/');
+    return res.redirect(url || '/');
 });
 
 /**
@@ -938,7 +938,7 @@ app.get('/api/lead/:id/activity', requireAuth, (req, res) => {
     }
     const leadActivities = activities.filter(a => a.leadId === leadId || a.leadId === encodeURIComponent(leadId));
     leadActivities.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-    res.json({ activities: leadActivities });
+    return res.json({ activities: leadActivities });
 });
 
 app.get('/health', (req, res) => {
