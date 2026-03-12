@@ -141,8 +141,7 @@ function requestTimer(req, res, next) {
 
     res.on('finish', () => {
         const durationMs = Date.now() - req._startTime;
-        res.setHeader && res.setHeader('X-Response-Time', `${durationMs}ms`);
-
+        
         if (durationMs >= SLOW_THRESHOLD_MS) {
             try {
                 const { logger } = require('./security');

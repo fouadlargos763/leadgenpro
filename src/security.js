@@ -262,6 +262,9 @@ const helmetConfig = {
 // ─── PRODUCTION-SAFE ERROR HANDLER ───────────────────────────────────────────
 
 function productionErrorHandler(err, req, res, next) {
+    if (res.headersSent) {
+        return next(err);
+    }
     const statusCode = err.status || err.statusCode || 500;
     const isProd = process.env.NODE_ENV === 'production';
 

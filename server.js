@@ -949,14 +949,7 @@ app.get('/health', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`\n\x1b[36m%s\x1b[0m`, `==============================================`);
-    console.log(`\x1b[32m%s\x1b[0m`, `  LEADGEN PRO DASHBOARD IS ONLINE!`);
-    console.log(`\x1b[36m%s\x1b[0m`, `  Access UI: http://localhost:${port}`);
-    console.log(`\x1b[36m%s\x1b[0m`, `==============================================\n`);
-    // Start daily backup scheduler
-    startBackupScheduler();
-});
+
 
 /**
  * SCHEDULER: Background Follow-up Automation (iterates ALL users)
