@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGen Pro | SaaS Growth Analytics</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .growth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            padding: 1.5rem;
+            border-radius: 20px;
+        }
+
+        .metric-title {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Outfit';
+        }
+
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th, .data-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-glass);
+            font-size: 0.9rem;
+        }
+
+        .rank-badge {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-chart-line logo-icon" style="color: var(--cyan);"></i>
+                <span class="logo-text">Growth<span>Metrics</span></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="admin.html"><i class="fas fa-users-cog"></i> User Mgmt</a></li>
+                    <li class="active"><a href="#"><i class="fas fa-chart-pie"></i> Analytics</a></li>
+                    <li><a href="admin_revenue.html"><i class="fas fa-money-bill-trend-up"></i> Revenue</a></li>
+                    <li><a href="admin_referrals.html"><i class="fas fa-user-plus"></i> Referrals</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <h3>SaaS Performance Overview</h3>
+            </header>
+
+            <div class="content-body">
+                <div class="analytics-grid">
+                    <div class="growth-card">
+                        <span class="metric-title">Total Users</span>
+                        <div class="metric-value" id="val-total-users">0</div>
+                    </div>
+                    <div class="growth-card">
+                        <span class="metric-title">DAU</span>
+                        <div class="metric-value" id="val-dau" style="color: var(--cyan);">0</div>
+                    </div>
+                    <div class="growth-card">
+                        <span class="metric-title">Leads Generated</span>
+                        <div class="metric-value" id="val-leads" style="color: var(--success);">0</div>
+                    </div>
+                    <div class="growth-card">
+                        <span class="metric-title">Campaigns</span>
+                        <div class="metric-value" id="val-campaigns">0</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="growth-card">
+                        <h3>Top Industries</h3>
+                        <table class="data-table">
+                            <tbody id="list-industries">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="growth-card">
+                        <h3>Top Target Cities</h3>
+                        <table class="data-table">
+                            <tbody id="list-cities">
+                                <!-- Loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function loadAnalytics() {
+            try {
+                const res = await fetch('/api/admin/analytics');
+                if (!res.ok) {
+                    window.location.href = 'dashboard.html';
+                    return;
+                }
+                const data = await res.json();
+
+                document.getElementById('val-total-users').textContent = data.totalUsers;
+                document.getElementById('val-dau').textContent = data.dau;
+                document.getElementById('val-leads').textContent = (data.leadsGenerated || 0).toLocaleString();
+                document.getElementById('val-campaigns').textContent = data.campaignsCreated;
+
+                const indBody = document.getElementById('list-industries');
+                indBody.innerHTML = data.topIndustries.map((ind, i) => `
+                    <tr>
+                        <td><span class="rank-badge">${i+1}</span> ${ind.name}</td>
+                        <td style="text-align:right; font-weight:700;">${ind.count}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="2">No data yet</td></tr>';
+
+                const cityBody = document.getElementById('list-cities');
+                cityBody.innerHTML = data.topCities.map((city, i) => `
+                    <tr>
+                        <td><span class="rank-badge">${i+1}</span> ${city.name}</td>
+                        <td style="text-align:right; font-weight:700;">${city.count}</td>
+                    </tr>
+                `).join('') || '<tr><td colspan="2">No data yet</td></tr>';
+
+            } catch (err) {
+                console.error('Analytics Load Error:', err);
+            }
+        }
+        loadAnalytics();
+    </script>
+</body>
+
+</html>

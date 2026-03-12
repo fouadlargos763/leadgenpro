@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGen Pro | Billing & Usage</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .billing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .billing-grid { grid-template-columns: 1fr; }
+        }
+
+        .billing-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .billing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .plan-badge {
+            padding: 0.5rem 1rem;
+            background: var(--primary);
+            color: #fff;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .info-row:last-child { border-bottom: none; }
+
+        .info-label { color: var(--text-muted); font-size: 0.9rem; }
+        .info-value { font-weight: 600; }
+
+        .usage-container {
+            margin-top: 1rem;
+        }
+
+        .usage-bar-bg {
+            height: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 100px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .usage-bar-fill {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .status-pill {
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .status-past_due { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .status-canceled { background: rgba(255, 255, 255, 0.1); color: var(--text-muted); }
+
+        .billing-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-rocket logo-icon"></i>
+                <span class="logo-text">LeadGen<span>Pro</span></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="dashboard.html"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
+                    <li><a href="#"><i class="fas fa-bullhorn"></i> Campaigns</a></li>
+                    <li><a href="#"><i class="fas fa-chart-line"></i> Pipeline</a></li>
+                    <li class="active"><a href="billing.html"><i class="fas fa-credit-card"></i> Billing</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" id="user-avatar">?</div>
+                    <div class="user-info">
+                        <span class="user-name" id="user-name">Loading...</span>
+                        <span class="user-role" id="user-email" style="font-size:0.7rem; opacity:0.6;"></span>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem; padding: 0 0.5rem;">
+                    <button id="btn-logout"
+                        style="width:100%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; padding:0.5rem; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:background 0.2s;">
+                        <i class="fas fa-sign-out-alt" style="margin-right:5px;"></i> Sign Out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="header-actions">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <h1 class="page-title">Billing & Subscription</h1>
+                <p class="page-subtitle">Manage your plan, billing history, and platform usage limits.</p>
+
+                <!-- Success/Cancel Messages -->
+                <div id="status-message" style="display: none; padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 2rem; align-items: center; gap: 1rem; font-weight: 500;">
+                    <i id="status-icon" class="fas"></i>
+                    <span id="status-text"></span>
+                </div>
+
+                <div class="billing-grid">
+                    <!-- Plan Details -->
+                    <div class="billing-card">
+                        <div class="billing-header">
+                            <h3>Current Subscription</h3>
+                            <span class="plan-badge" id="display-plan">Loading...</span>
+                        </div>
+                        <div class="info-container">
+                            <div class="info-row">
+                                <span class="info-label">Subscription Status</span>
+                                <span id="display-status" class="status-pill status-active">...</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Renewal Date</span>
+                                <span id="display-renewal" class="info-value">...</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Payment Method</span>
+                                <span class="info-value">•••• 4242 (Stripe)</span>
+                            </div>
+                        </div>
+                        <div class="billing-actions">
+                            <a href="pricing.html" class="btn btn-primary" style="text-decoration:none;">Upgrade Plan</a>
+                            <button class="btn btn-secondary" id="btn-cancel" onclick="handleCancel()">Cancel Subscription</button>
+                        </div>
+                    </div>
+
+                    <!-- Usage Stats -->
+                    <div class="billing-card">
+                        <div class="billing-header">
+                            <h3>Platform Usage</h3>
+                            <i class="fas fa-chart-pie" style="color: var(--primary);"></i>
+                        </div>
+                        <div class="usage-container">
+                            <div style="display: flex; justify-content: space-between; font-weight: 600;">
+                                <span>Leads Discovery</span>
+                                <span id="usage-text">0 / 0</span>
+                            </div>
+                            <div class="usage-bar-bg">
+                                <div class="usage-bar-fill" id="usage-bar"></div>
+                            </div>
+                            <p id="usage-limit-text" style="font-size: 0.8rem; color: var(--text-muted);">
+                                You have used 0% of your monthly lead allowance.
+                            </p>
+                        </div>
+                        <div style="margin-top: auto; padding: 1rem; background: rgba(99, 102, 241, 0.05); border-radius: 12px; font-size: 0.85rem;">
+                            <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 5px;"></i>
+                            Need more? The <strong>Pro Plan</strong> offers unlimited leads and automation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        async function fetchBilling() {
+            // Handle URL status messages
+            const urlParams = new URLSearchParams(window.location.search);
+            const statusMsg = document.getElementById('status-message');
+            const statusText = document.getElementById('status-text');
+            const statusIcon = document.getElementById('status-icon');
+
+            if (urlParams.has('success')) {
+                statusMsg.style.display = 'flex';
+                statusMsg.style.background = 'rgba(16, 185, 129, 0.1)';
+                statusMsg.style.color = 'var(--success)';
+                statusMsg.style.border = '1px solid rgba(16, 185, 129, 0.2)';
+                statusText.textContent = 'Success! Your subscription has been activated.';
+                statusIcon.className = 'fas fa-check-circle';
+            } else if (urlParams.has('canceled')) {
+                statusMsg.style.display = 'flex';
+                statusMsg.style.background = 'rgba(245, 158, 11, 0.1)';
+                statusMsg.style.color = 'var(--gold)';
+                statusMsg.style.border = '1px solid rgba(245, 158, 11, 0.2)';
+                statusText.textContent = 'Payment canceled. No changes were made to your account.';
+                statusIcon.className = 'fas fa-exclamation-triangle';
+            }
+
+            try {
+                // Auth check & profile
+                const authRes = await fetch('/api/auth/me');
+                if (!authRes.ok) return window.location.href = '/login.html';
+                const userData = await authRes.json();
+                document.getElementById('user-name').textContent = userData.user.name;
+                document.getElementById('user-email').textContent = userData.user.email;
+                document.getElementById('user-avatar').textContent = userData.user.name.charAt(0).toUpperCase();
+
+                // Billing Details
+                const res = await fetch('/api/subscription/details');
+                const data = await res.json();
+
+                document.getElementById('display-plan').textContent = data.plan;
+                document.getElementById('display-status').textContent = data.status;
+                document.getElementById('display-status').className = `status-pill status-${data.status}`;
+                
+                if (data.renewalDate) {
+                    const date = new Date(data.renewalDate);
+                    document.getElementById('display-renewal').textContent = date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' });
+                } else {
+                    document.getElementById('display-renewal').textContent = 'N/A';
+                }
+
+                // Usage
+                const max = data.maxLeads === Infinity ? 10000 : data.maxLeads;
+                const used = data.leadsUsed;
+                document.getElementById('usage-text').textContent = `${used} / ${data.maxLeads === Infinity ? '∞' : data.maxLeads}`;
+                
+                const percent = Math.min(100, Math.round((used / max) * 100));
+                document.getElementById('usage-bar').style.width = `${percent}%`;
+                document.getElementById('usage-limit-text').textContent = `You have used ${percent}% of your monthly lead allowance.`;
+
+                if (data.status === 'canceled' || data.status === 'canceling') {
+                    document.getElementById('btn-cancel').disabled = true;
+                    document.getElementById('btn-cancel').textContent = 'Cancellation Pending';
+                }
+            } catch (err) {
+                console.error('Failed to load billing:', err);
+            }
+        }
+
+        async function handleCancel() {
+            if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of the current period.')) return;
+
+            try {
+                const res = await fetch('/api/cancel-subscription', { method: 'POST' });
+                if (res.ok) {
+                    alert('Subscription set to cancel at the end of the current period.');
+                    location.reload();
+                } else {
+                    const error = await res.json();
+                    alert('Error: ' + error.error);
+                }
+            } catch (err) {
+                alert('An error occurred.');
+            }
+        }
+
+        // Logout
+        document.getElementById('btn-logout').addEventListener('click', async () => {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+        });
+
+        fetchBilling();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://leadgenpro-backend.onrender.com/api/$1"
+    },
+    {
+      "source": "/track/(.*)",
+      "destination": "https://leadgenpro-backend.onrender.com/track/$1"
+    }
+  ]
+}

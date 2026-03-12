@@ -1,0 +1,54 @@
+{
+  "lead-2": [
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:30:57.327Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:32:07.798Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:33:08.888Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://calendly.com/mylocalbooking"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:34:27.309Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:34:33.948Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:37:15.917Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    },
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T19:04:15.810Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    }
+  ],
+  "lead-3": [
+    {
+      "clicked": true,
+      "clickedAt": "2026-03-11T18:38:06.926Z",
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    }
+  ]
+}

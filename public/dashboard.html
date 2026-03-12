@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGen Pro | Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-rocket logo-icon"></i>
+                <span class="logo-text">LeadGen<span>Pro</span></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
+                    <li><a href="#"><i class="fas fa-bullhorn"></i> Campaigns</a></li>
+                    <li><a href="#"><i class="fas fa-chart-line"></i> Pipeline</a></li>
+                    <li><a href="pricing.html"><i class="fas fa-credit-card"></i> Billing</a></li>
+                    <li id="nav-admin" style="display:none;"><a href="admin.html" style="color: var(--gold);"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" id="user-avatar">?</div>
+                    <div class="user-info">
+                        <span class="user-name" id="user-name">Loading...</span>
+                        <span class="user-role" id="user-email" style="font-size:0.7rem; opacity:0.6;"></span>
+                    </div>
+                </div>
+                <div style="margin-top:0.75rem; padding: 0 0.5rem;">
+                    <div id="user-since" style="font-size:0.7rem; color: var(--text-muted); margin-bottom:0.6rem;">
+                    </div>
+                    <button id="btn-logout"
+                        style="width:100%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; padding:0.5rem; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:background 0.2s;"
+                        onmouseover="this.style.background='rgba(239,68,68,0.2)'"
+                        onmouseout="this.style.background='rgba(239,68,68,0.12)'">
+                        <i class="fas fa-sign-out-alt" style="margin-right:5px;"></i> Sign Out
+                    </button>
+                    <div class="tip-box">
+                        <div class="tip-icon"><i class="fas fa-lightbulb"></i></div>
+                        <div class="tip-content">
+                            <strong>Daily Tip</strong>
+                            <p id="dashboard-tip">Start by generating leads for your niche.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search leads, campaigns...">
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="btn-refresh"><i class="fas fa-sync-alt"></i></button>
+                    <button class="btn btn-primary" id="btn-new-campaign"><i class="fas fa-plus"></i> New
+                        Campaign</button>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem;">
+                    <div>
+                        <h1 class="page-title">Growth Dashboard</h1>
+                        <p class="page-subtitle" style="margin-bottom: 0;">Welcome back. Your outreach pipeline is
+                            performing well today.</p>
+                    </div>
+                    <div class="campaign-selector-wrapper"
+                        style="display: flex; align-items: center; gap: 0.75rem; background: var(--bg-card); padding: 0.5rem 1rem; border: 1px solid var(--border-glass); border-radius: 12px;">
+                        <span style="color: var(--text-muted); font-size: 0.875rem;"><i class="fas fa-folder-open"
+                                style="margin-right: 5px;"></i> Campaign:</span>
+                        <select id="campaign-selector"
+                            style="background: transparent; border: none; color: var(--text-main); outline: none; font-size: 0.875rem; font-weight: 600; cursor: pointer; min-width: 200px;">
+                            <option value="" style="color: #000;">Loading campaigns...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <section class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon icon-blue"><i class="fas fa-user-friends"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-label">Total Leads</span>
+                            <h2 class="stat-value" id="stat-total-leads">0</h2>
+                            <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 12% vs last week</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-cyan"><i class="fas fa-envelope-open-text"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-label">Emails with Data</span>
+                            <h2 class="stat-value" id="stat-leads-with-emails">0</h2>
+                            <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 8% growth</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-gold"><i class="fas fa-paper-plane"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-label">Outreach Sent</span>
+                            <h2 class="stat-value" id="stat-outreach-sent">0</h2>
+                            <span class="stat-trend trend-neutral"><i class="fas fa-minus"></i> Stable</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon icon-green"><i class="fas fa-check-circle"></i></div>
+                        <div class="stat-details">
+                            <span class="stat-label">Qualified</span>
+                            <h2 class="stat-value" id="stat-qualified-leads">0</h2>
+                            <span class="stat-trend trend-up"><i class="fas fa-arrow-up"></i> 5 new found</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Action Controls -->
+                <section class="action-panel">
+                    <div class="panel-header">
+                        <h3>Pipeline Control</h3>
+                        <span class="pulse-indicator">System Online</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn" data-action="find">
+                            <div class="btn-icon"><i class="fas fa-search-location"></i></div>
+                            <div class="btn-text">
+                                <span class="title">Find Leads</span>
+                                <span class="desc">Scrape Google Maps</span>
+                            </div>
+                        </button>
+                        <button class="action-btn" data-action="enrich">
+                            <div class="btn-icon"><i class="fas fa-magic"></i></div>
+                            <div class="btn-text">
+                                <span class="title">Enrich Data</span>
+                                <span class="desc">Extract Emails</span>
+                            </div>
+                        </button>
+                        <button class="action-btn" data-action="mail">
+                            <div class="btn-icon"><i class="fas fa-eye"></i></div>
+                            <div class="btn-text">
+                                <span class="title">Preview Outreach</span>
+                                <span class="desc">Review Templates</span>
+                            </div>
+                        </button>
+                        <button class="action-btn action-btn-primary" data-action="send">
+                            <div class="btn-icon"><i class="fas fa-rocket"></i></div>
+                            <div class="btn-text">
+                                <span class="title">Launch Campaign</span>
+                                <span class="desc">Send Live Emails</span>
+                            </div>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Viral Growth Section -->
+                <section class="referral-panel" style="margin-bottom: 2.5rem;">
+                    <div style="background: linear-gradient(135deg, rgba(99,179,237,0.1), rgba(129,230,217,0.05)); border: 1px solid var(--border-glass); border-radius: 20px; padding: 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+                        <div>
+                            <h2 style="font-family: 'Outfit'; margin-bottom: 0.5rem; color: var(--cyan);">🚀 Grow with Friends</h2>
+                            <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">Invite your network and get <strong>100 extra monthly leads</strong> for every successful signup.</p>
+                            
+                            <div class="referral-link-box" style="background: var(--bg-card); border: 1px solid var(--border-glass); padding: 0.75rem 1rem; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                                <code id="ref-link-display" style="font-size: 0.85rem; color: var(--text-main); opacity: 0.8; word-break: break-all;">Loading your link...</code>
+                                <button class="btn btn-sm btn-secondary" onclick="copyRefLink()" style="white-space: nowrap;"><i class="fas fa-copy"></i> Copy</button>
+                            </div>
+                            <div id="ref-stats" style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">
+                                You have earned <span id="val-bonus-leads" style="color: var(--success); font-weight: 700;">0</span> bonus leads.
+                            </div>
+                        </div>
+
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 16px; border: 1px solid var(--border-glass);">
+                            <h4 style="margin-bottom: 1rem;"><i class="fas fa-paper-plane" style="color: var(--cyan); margin-right: 8px;"></i> Invite by Email</h4>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="email" id="invite-email" placeholder="friend@example.com" style="flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); padding: 0.75rem; border-radius: 8px; color: white; outline: none;">
+                                <button class="btn btn-primary" onclick="sendInvite()">Send</button>
+                            </div>
+                            <p id="invite-status" style="margin-top: 0.75rem; font-size: 0.8rem; display: none;"></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Campaign Manager -->
+                <section class="leads-section" style="margin-bottom: 2.5rem;">
+                    <div class="table-header">
+                        <h3>Campaign Manager</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="campaigns-table">
+                            <thead>
+                                <tr>
+                                    <th>Campaign</th>
+                                    <th>Leads</th>
+                                    <th>Emails Sent</th>
+                                    <th>Open Rate</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaigns-list">
+                                <!-- Campaigns loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Lead Table -->
+                <section class="leads-section">
+                    <div class="table-header">
+                        <h3>Active Leads Pipeline</h3>
+                        <div class="table-filters">
+                            <select id="filter-status">
+                                <option value="all">All Status</option>
+                                <option value="new">New</option>
+                                <option value="contacted">Contacted</option>
+                                <option value="replied">Replied</option>
+                                <option value="qualified">Qualified</option>
+                                <option value="closed">Closed</option>
+                            </select>
+                            <button class="btn btn-outline" id="btn-export-csv" onclick="exportCSV()" title="Download leads as CSV"><i class="fas fa-download"></i> Export CSV</button>
+                        </div>
+                    </div>
+                    <!-- Live Lead Filter -->
+                    <div style="padding: 0.75rem 0 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="position: relative; flex: 1; max-width: 380px;">
+                            <i class="fas fa-search" style="position:absolute; left:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem;"></i>
+                            <input type="search" id="leads-search" placeholder="Filter by name, email, city, category…"
+                                oninput="filterLeads(this.value)"
+                                style="width:100%; padding: 0.6rem 0.9rem 0.6rem 2.4rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border-glass); border-radius: 10px; color: white; outline: none; font-size: 0.875rem; font-family: 'Inter', sans-serif; transition: border-color 0.2s;"
+                                onfocus="this.style.borderColor='var(--cyan)'"
+                                onblur="this.style.borderColor='var(--border-glass)'">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="leads-table">
+                            <thead>
+                                <tr>
+                                    <th>Company</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Website</th>
+                                    <th>Score</th>
+                                    <th>AI</th>
+                                    <th>Opened</th>
+                                    <th>Clicked</th>
+                                    <th>Follow-Up</th>
+                                    <th>Status</th>
+                                    <th>Queue</th>
+                                    <th>Website Health</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-list">
+                                <!-- Data will be loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Dynamic Modal for Console Output -->
+        <div id="console-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Action Progress</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <pre id="console-output">Initializing system logs...</pre>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Preview Modal -->
+        <div id="preview-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Email Preview</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <!-- Real-looking email preview body -->
+                <div class="modal-body"
+                    style="background: #ffffff; color: #1f2937; padding: 2rem; border-radius: 8px; margin: 1.5rem;">
+                    <div
+                        style="border-bottom: 1px solid #e5e7eb; margin-bottom: 1rem; padding-bottom: 1rem; font-family: 'Inter', sans-serif;">
+                        <strong style="color: #4b5563;">Subject:</strong> <span id="preview-subject"
+                            style="font-weight: 600; font-size: 1.1rem;"></span>
+                    </div>
+                    <div id="preview-body"
+                        style="min-height: 200px; font-family: 'Inter', sans-serif; line-height: 1.6;">
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; gap: 1rem;">
+                    <button class="btn btn-primary" id="btn-send-preview"><i class="fas fa-paper-plane"></i> Send
+                        Email</button>
+                    <button class="btn btn-secondary"><i class="fas fa-edit"></i> Edit Draft</button>
+                    <button class="btn btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+            <div id="timeline-modal" class="modal">
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h3>Lead Activity Timeline</h3>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body" style="background: transparent; padding: 2rem;">
+                        <div id="timeline-container"
+                            style="position: relative; padding-left: 2rem; border-left: 2px solid var(--border-glass); margin-left: 1rem;">
+                            <!-- Timeline events generated via JS -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary close-modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Website Analysis Modal -->
+        <div id="analysis-modal" class="modal">
+            <div class="modal-content" style="max-width: 620px;">
+                <div class="modal-header">
+                    <h3>🔍 Website Audit Report</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 2rem; background: transparent;">
+                    <div id="analysis-container">
+                        <div style="color: var(--text-muted);">Loading analysis...</div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn btn-primary" id="btn-run-analysis">🔄 Re-Analyze</button>
+                    <button class="btn btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+        <!-- AI Insights Modal -->
+        <div id="ai-modal" class="modal">
+            <div class="modal-content" style="max-width: 640px;">
+                <div class="modal-header">
+                    <h3><i class="fas fa-brain" style="color: var(--cyan); margin-right: 8px;"></i> AI Lead Intelligence</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 2rem; background: transparent;">
+                    <div id="ai-lead-name" style="font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem;"></div>
+
+                    <!-- Score Tier Badge -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <span id="ai-tier-badge" style="display: inline-block; padding: 4px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px;"></span>
+                        <span id="ai-score-num" style="font-size: 2rem; font-weight: 800; font-family: Outfit; margin-left: 12px;"></span>
+                        <span style="color: var(--text-muted); font-size: 0.9rem;">/ 100</span>
+                    </div>
+
+                    <!-- AI Insight -->
+                    <div style="background: rgba(99,179,237,0.07); border: 1px solid rgba(99,179,237,0.2); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--cyan); margin-bottom: 0.4rem;"><i class="fas fa-lightbulb"></i> AI Insight</div>
+                        <div id="ai-insight-text" style="font-size: 0.95rem; line-height: 1.6;"></div>
+                    </div>
+
+                    <!-- Score Breakdown -->
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.75rem;">Score Breakdown</div>
+                        <ul id="ai-score-reasons" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.875rem;"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn btn-primary" id="btn-ai-optimize-email"><i class="fas fa-magic"></i> Optimize Email</button>
+                    <button class="btn btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Optimizer Modal -->
+        <div id="email-optimizer-modal" class="modal">
+            <div class="modal-content" style="max-width: 680px;">
+                <div class="modal-header">
+                    <h3><i class="fas fa-magic" style="color: var(--gold); margin-right: 8px;"></i> AI Email Optimizer</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body" style="padding: 2rem; background: transparent;">
+                    <!-- Suggestions -->
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); margin-bottom: 0.75rem;"><i class="fas fa-wand-magic-sparkles"></i> AI Suggestions</div>
+                        <ul id="optimizer-suggestions" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.875rem;"></ul>
+                    </div>
+                    <!-- Improved Version -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div>
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.5rem;">Original Subject</div>
+                            <div id="orig-subject" style="background: rgba(255,255,255,0.04); padding: 0.75rem; border-radius: 8px; font-size: 0.875rem;"></div>
+                        </div>
+                        <div>
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--success); margin-bottom: 0.5rem;">✨ Improved Subject</div>
+                            <div id="new-subject" style="background: rgba(72,199,142,0.08); border: 1px solid rgba(72,199,142,0.2); padding: 0.75rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600;"></div>
+                        </div>
+                        <div style="grid-column: 1 / -1;">
+                            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--success); margin-bottom: 0.5rem;">✨ Improved Body</div>
+                            <div id="new-body" style="background: rgba(72,199,142,0.08); border: 1px solid rgba(72,199,142,0.2); padding: 1rem; border-radius: 8px; font-size: 0.875rem; line-height: 1.65; white-space: pre-wrap;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="onboarding-modal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 650px;">
+                <div class="onboarding-content">
+                    <div id="welcome-screen">
+                        <div style="font-size: 4rem; margin-bottom: 2rem;">🚀</div>
+                        <h1 class="onboarding-title">Welcome to LeadGenPro</h1>
+                        <p class="onboarding-subtitle">Find your first clients in minutes. Let's set up your account.</p>
+                        <button class="btn btn-primary" style="padding: 1rem 3rem; margin: 0 auto;" onclick="startWizard()">Start Setup</button>
+                    </div>
+
+                    <div id="setup-wizard" style="display: none;">
+                        <div class="wizard-steps">
+                            <div class="wizard-dot active" id="dot-1">1</div>
+                            <div class="wizard-dot" id="dot-2">2</div>
+                            <div class="wizard-dot" id="dot-3">3</div>
+                        </div>
+
+                        <!-- Step 1: Category -->
+                        <div class="wizard-panel active" id="wizard-step-1">
+                            <h3>Whom are you looking for?</h3>
+                            <p style="color:var(--text-muted); margin-bottom: 2rem;">Select your target business category.</p>
+                            <div class="wizard-input-group">
+                                <label>Target Niche</label>
+                                <select id="wizard-category">
+                                    <option value="Roofing">Roofing Contractors</option>
+                                    <option value="Plumbing">Plumbing Services</option>
+                                    <option value="Real Estate">Real Estate Agencies</option>
+                                    <option value="Marketing">Marketing Agencies</option>
+                                    <option value="Solar">Solar Installation</option>
+                                </select>
+                            </div>
+                            <div class="wizard-nav">
+                                <button class="btn btn-primary" onclick="nextStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: City -->
+                        <div class="wizard-panel" id="wizard-step-2">
+                            <h3>Where are they located?</h3>
+                            <p style="color:var(--text-muted); margin-bottom: 2rem;">Enter the city you want to target.</p>
+                            <div class="wizard-input-group">
+                                <label>City Name</label>
+                                <input type="text" id="wizard-city" placeholder="e.g. Columbus">
+                            </div>
+                            <div class="wizard-nav">
+                                <button class="btn btn-outline" onclick="nextStep(1)">Back</button>
+                                <button class="btn btn-primary" onclick="nextStep(3)">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Launch -->
+                        <div class="wizard-panel" id="wizard-step-3">
+                            <h3>Ready to grow?</h3>
+                            <p style="color:var(--text-muted); margin-bottom: 2rem;">We will create your first campaign and find leads immediately.</p>
+                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; text-align: left;">
+                                <div style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color:var(--success); margin-right: 10px;"></i> Campaign: <strong>My First Campaign</strong></div>
+                                <div id="summary-text" style="margin-bottom: 0.5rem;"></div>
+                            </div>
+                            <div class="wizard-nav">
+                                <button class="btn btn-outline" onclick="nextStep(2)">Back</button>
+                                <button class="btn btn-primary" onclick="finishOnboarding()">Generate First Leads <i class="fas fa-bolt"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="app.js"></script>
+</body>
+
+</html>

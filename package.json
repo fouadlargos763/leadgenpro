@@ -1,0 +1,37 @@
+{
+  "name": "landing-page-lead-gen",
+  "version": "1.0.0",
+  "description": "Lead generation service for finding businesses without websites.",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "build": "echo 'No build step required for this project'",
+    "find-leads": "node src/finder.js",
+    "send-emails": "node src/mailer.js",
+    "dashboard": "node server.js"
+  },
+  "dependencies": {
+    "apify-client": "^2.22.2",
+    "axios": "^1.13.6",
+    "bcryptjs": "^3.0.3",
+    "cheerio": "^1.2.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.3.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "node-cache": "^5.1.2",
+    "nodemailer": "^6.10.1",
+    "openai": "^6.27.0",
+    "stripe": "^20.4.1",
+    "validator": "^13.15.26",
+    "winston": "^3.19.0"
+  }
+}

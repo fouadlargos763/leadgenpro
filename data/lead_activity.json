@@ -1,0 +1,45 @@
+[
+  {
+    "leadId": "lead-2",
+    "event": "email_sent",
+    "timestamp": "2026-03-11T19:03:51.544Z",
+    "metadata": {
+      "status": "Contacted",
+      "file": "enriched_leads_1773235656521.json"
+    }
+  },
+  {
+    "leadId": "lead-2",
+    "event": "email_opened",
+    "timestamp": "2026-03-11T19:04:02.335Z",
+    "metadata": {
+      "campaign": "enriched_leads_1773235656521.json"
+    }
+  },
+  {
+    "leadId": "lead-2",
+    "event": "link_clicked",
+    "timestamp": "2026-03-11T19:04:15.835Z",
+    "metadata": {
+      "campaign": "enriched_leads_1773235656521.json",
+      "url": "https://myportfolio.com"
+    }
+  },
+  {
+    "leadId": "lead-1",
+    "event": "email_sent",
+    "timestamp": "2026-03-11T19:19:03.319Z",
+    "metadata": {
+      "status": "Contacted",
+      "file": "enriched_leads_1773235656521.json"
+    }
+  },
+  {
+    "leadId": "lead-0",
+    "event": "email_opened",
+    "timestamp": "2026-03-11T20:15:56.947Z",
+    "metadata": {
+      "campaign": "enriched_leads_1773235656521.json"
+    }
+  }
+]

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — LeadGenPro AI Lead Generation</title>
+<meta name="description" content="See exactly how LeadGenPro finds leads, generates personalized outreach, and helps you close clients in minutes.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#050810;color:#e2e8f0;font-family:'Inter',sans-serif;line-height:1.7;overflow-x:hidden;}
+nav{position:sticky;top:0;z-index:100;background:rgba(5,8,16,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.07);padding:1rem 2rem;display:flex;align-items:center;gap:1.5rem;}
+nav a{color:#94a3b8;text-decoration:none;font-size:0.875rem;transition:color 0.2s;}nav a:hover{color:#fff;}
+nav .logo{font-family:'Outfit';font-weight:800;font-size:1.25rem;background:linear-gradient(90deg,#06b6d4,#6366f1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-right:auto;}
+.container{max-width:1100px;margin:0 auto;padding:0 2rem;}
+.hero{text-align:center;padding:6rem 2rem 4rem;}
+.badge{display:inline-block;background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);color:#06b6d4;padding:0.4rem 1rem;border-radius:100px;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;margin-bottom:1.5rem;}
+h1{font-family:'Outfit';font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.15;margin-bottom:1.25rem;}
+.gradient-text{background:linear-gradient(135deg,#06b6d4,#6366f1,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:#94a3b8;font-size:1.15rem;max-width:600px;margin:0 auto 2.5rem;}
+.btn{display:inline-block;padding:0.9rem 2.2rem;border-radius:12px;font-family:'Outfit';font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.2s;}
+.btn-primary{background:linear-gradient(135deg,#06b6d4,#6366f1);color:#fff;}
+.btn-outline{border:1px solid rgba(255,255,255,0.15);color:#e2e8f0;margin-left:1rem;}
+.btn-outline:hover{border-color:#06b6d4;color:#06b6d4;}
+
+/* Steps */
+.steps-section{padding:6rem 0;}
+.steps-section h2{font-family:'Outfit';font-size:2.25rem;font-weight:800;text-align:center;margin-bottom:1rem;}
+.steps-sub{color:#64748b;text-align:center;margin-bottom:4rem;}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+.step-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2.5rem 2rem;position:relative;transition:transform 0.25s,border-color 0.25s;}
+.step-card:hover{transform:translateY(-6px);border-color:rgba(6,182,212,0.35);}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;font-family:'Outfit';font-weight:800;font-size:1.25rem;margin-bottom:1.25rem;}
+.step-num.c1{background:linear-gradient(135deg,#06b6d4,#0891b2);color:#fff;}
+.step-num.c2{background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;}
+.step-num.c3{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;}
+.step-num.c4{background:linear-gradient(135deg,#10b981,#059669);color:#fff;}
+.step-card h3{font-family:'Outfit';font-size:1.2rem;color:#fff;margin-bottom:0.75rem;}
+.step-card p{color:#64748b;font-size:0.9rem;}
+.connector{display:none;}
+
+/* Features deep-dive */
+.features-section{padding:5rem 0;border-top:1px solid rgba(255,255,255,0.06);}
+.features-section .inner{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+@media(max-width:768px){.features-section .inner{grid-template-columns:1fr;}}
+.features-section h2{font-family:'Outfit';font-size:2rem;font-weight:800;color:#fff;margin-bottom:1rem;}
+.feature-list{margin:1.5rem 0;list-style:none;}
+.feature-list li{display:flex;gap:0.75rem;margin-bottom:1rem;color:#94a3b8;font-size:0.95rem;}
+.feature-list li i{color:#10b981;margin-top:3px;flex-shrink:0;}
+.mock-screen{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:1.5rem;font-family:monospace;font-size:0.82rem;}
+.mock-line{padding:0.3rem 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:0.75rem;}
+.mock-label{color:#64748b;min-width:100px;}
+.mock-val{color:#06b6d4;}
+.mock-badge{display:inline-block;padding:1px 8px;border-radius:4px;font-size:0.75rem;}
+.badge-hot{background:rgba(239,68,68,0.15);color:#fca5a5;}
+.badge-warm{background:rgba(251,146,60,0.15);color:#fdba74;}
+
+/* CTA */
+.cta-section{text-align:center;padding:6rem 2rem;border-top:1px solid rgba(255,255,255,0.06);}
+.cta-section h2{font-family:'Outfit';font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:1rem;}
+.cta-section p{color:#64748b;margin-bottom:2.5rem;}
+
+footer{text-align:center;padding:3rem 2rem;color:#475569;font-size:0.875rem;border-top:1px solid rgba(255,255,255,0.07);}
+footer a{color:#06b6d4;text-decoration:none;margin:0 0.5rem;}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="logo">⚡ LeadGenPro</a>
+  <a href="/">Home</a>
+  <a href="/how-it-works.html" style="color:#06b6d4;">How It Works</a>
+  <a href="/case-studies.html">Case Studies</a>
+  <a href="/pricing.html">Pricing</a>
+  <a href="/demo.html">Demo</a>
+  <a href="/dashboard.html" style="margin-left:auto;color:#06b6d4;">Dashboard →</a>
+</nav>
+
+<section class="hero">
+  <div class="badge"><i class="fas fa-cogs"></i> &nbsp; See How It Works</div>
+  <h1>From Zero to <span class="gradient-text">Signed Clients</span><br>in 4 Simple Steps</h1>
+  <p>LeadGenPro automates the most time-consuming parts of client acquisition — so you focus on closing, not cold calling.</p>
+  <a href="/register.html" class="btn btn-primary">Start Free Trial</a>
+  <a href="/demo.html" class="btn btn-outline">Watch Demo</a>
+</section>
+
+<section class="steps-section">
+  <div class="container">
+    <h2>The LeadGenPro Process</h2>
+    <p class="steps-sub">From finding leads to landing clients — here's exactly what happens.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num c1">1</div>
+        <h3>🔍 Define Your Target</h3>
+        <p>Enter a business category (e.g. "Roofing") and a city (e.g. "Columbus"). Our AI scrapes Google Maps, Yelp, and directories for matching businesses in seconds.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num c2">2</div>
+        <h3>🤖 AI Lead Scoring</h3>
+        <p>Every lead is analysed for website quality, contact availability, and local competition. Each gets a 0-100 score so you always contact the highest-value prospects first.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num c3">3</div>
+        <h3>✉️ Personalized Outreach</h3>
+        <p>GPT-4 writes a unique, compelling cold email for every lead — referencing their business name, website gap, and local market. No templates. No spam.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num c4">4</div>
+        <h3>📈 Track & Follow Up</h3>
+        <p>See who opened your email, who clicked your link, and who's ready to close. Automated follow-up sequences run while you sleep.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-section">
+  <div class="container">
+    <div class="inner">
+      <div>
+        <div class="badge" style="background:rgba(99,102,241,0.12);border-color:rgba(99,102,241,0.3);color:#818cf8;">AI-Powered Intelligence</div>
+        <h2>Every Lead Scored.<br>Every Email Personalized.</h2>
+        <p style="color:#64748b;margin-bottom:1.5rem;">Our AI doesn't just find leads — it qualifies them so you never waste time on low-value prospects.</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> Website health audit for every lead</li>
+          <li><i class="fas fa-check-circle"></i> AI-generated personalised hook per email</li>
+          <li><i class="fas fa-check-circle"></i> Email open & click tracking</li>
+          <li><i class="fas fa-check-circle"></i> Automated 3-step follow-up sequence</li>
+          <li><i class="fas fa-check-circle"></i> Referral system to grow your pipeline organically</li>
+        </ul>
+        <a href="/register.html" class="btn btn-primary">Get Started Free</a>
+      </div>
+      <div class="mock-screen">
+        <div style="font-size:0.7rem;color:#475569;margin-bottom:1rem;font-family:'Inter',sans-serif;">LEAD INTELLIGENCE DASHBOARD</div>
+        <div class="mock-line"><span class="mock-label">Business:</span><span class="mock-val">Summit Roofing LLC</span></div>
+        <div class="mock-line"><span class="mock-label">Score:</span><span style="color:#10b981;font-weight:700;">87 / 100</span><span class="mock-badge badge-hot" style="margin-left:8px;">🔥 Hot</span></div>
+        <div class="mock-line"><span class="mock-label">Website:</span><span style="color:#ef4444;">⚠ Missing</span></div>
+        <div class="mock-line"><span class="mock-label">Email:</span><span class="mock-val">info@summitroofing.com</span></div>
+        <div class="mock-line"><span class="mock-label">AI Insight:</span><span style="color:#94a3b8;font-size:0.78rem;">"No website detected — high converting prospect. Missing quote form."</span></div>
+        <div class="mock-line"><span class="mock-label">Status:</span><span class="mock-badge" style="background:rgba(6,182,212,0.15);color:#67e8f9;">Contacted</span></div>
+        <div class="mock-line"><span class="mock-label">Opened:</span><span style="color:#10b981;">✓ Yes (2h ago)</span></div>
+        <div style="margin-top:1rem;padding:0.75rem;background:rgba(6,182,212,0.05);border-radius:8px;border:1px solid rgba(6,182,212,0.15);font-size:0.78rem;color:#94a3b8;">
+          📧 Follow-up #2 scheduled for March 15, 2026
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Fill Your Pipeline?</h2>
+    <p>Join hundreds of freelancers and agencies using LeadGenPro to land new clients every week.</p>
+    <a href="/register.html" class="btn btn-primary" style="font-size:1.05rem;padding:1rem 2.5rem;">Start Your Free Trial — No Card Required</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 LeadGenPro &bull;
+  <a href="/privacy.html">Privacy</a>
+  <a href="/terms.html">Terms</a>
+  <a href="/refund.html">Refund Policy</a>
+  <a href="/contact.html">Contact</a>
+</footer>
+</body>
+</html>

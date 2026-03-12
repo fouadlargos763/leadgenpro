@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGenPro | AI-Powered Lead Generation & Outreach</title>
+    <meta name="description" content="Turn cold prospects into clients with AI-powered lead generation, personalized outreach, and smart campaign tracking.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #050810;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --cyan: #06b6d4;
+            --success: #10b981;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --font-main: 'Inter', sans-serif;
+            --font-headings: 'Outfit', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Ambient backgrounds */
+        .ambient-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glow-1 {
+            position: absolute;
+            top: -10%;
+            right: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+        }
+
+        .glow-2 {
+            position: absolute;
+            bottom: -5%;
+            left: -5%;
+            width: 50%;
+            height: 50%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 1.5rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(5, 8, 16, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-headings);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--cyan);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-main);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            color: white;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            color: var(--text);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-muted);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 10rem 0 6rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 100px;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-family: var(--font-headings);
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff 40%, var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Hero Mockup Area */
+        .hero-mockup {
+            margin-top: 5rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .mockup-container {
+            background: #111;
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 0.5rem;
+            box-shadow: 0 30px 100px rgba(0, 0, 0, 0.8);
+            max-width: 1000px;
+            margin: 0 auto;
+            transform: perspective(1000px) rotateX(5deg);
+        }
+
+        .mockup-header {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            padding: 0 1rem;
+            gap: 0.5rem;
+        }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; opacity: 0.6; }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
+
+        .mockup-img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Features */
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-headings);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features {
+            padding: 8rem 0;
+            background: rgba(255,255,255,0.01);
+            border-top: 1px solid var(--border-glass);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-family: var(--font-headings);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* How it works */
+        .how-it-works {
+            padding: 8rem 0;
+        }
+
+        .step-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-num {
+            font-size: 5rem;
+            font-weight: 900;
+            color: rgba(255, 255, 255, 0.03);
+            position: absolute;
+            top: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--cyan);
+        }
+
+        /* Pricing */
+        .pricing {
+            padding: 8rem 0;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.05) 0%, transparent 70%);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 28px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .price-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            z-index: 5;
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.1);
+        }
+
+        .price-header h4 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .price-amount {
+            font-family: var(--font-headings);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount span {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .price-features {
+            list-style: none;
+            margin: 2rem 0;
+            flex-grow: 1;
+        }
+
+        .price-features li {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .price-features li i {
+            color: var(--success);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 8rem 0;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 6rem 0 3rem;
+            border-top: 1px solid var(--border-glass);
+            background: #03050a;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+
+        .footer-col h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .step-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .hero h1 { font-size: 3rem; }
+            .price-card.featured { transform: scale(1); }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ambient-glow">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="logo">
+                <i class="fas fa-bolt"></i> LeadGen<span>Pro</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="#pricing">Pricing</a>
+                <a href="login.html">Login</a>
+                <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <span class="badge">Introducing v2.0 AI Engine</span>
+            <h1>The Smarter Way to <br>Find & Convert Leads</h1>
+            <p>Combine high-intent lead discovery with AI-personalized outreach. Stop hunting and start scaling your outbound engine today.</p>
+            <div class="hero-actions">
+                <a href="register.html" class="btn btn-primary">Get Started for Free</a>
+                <a href="#demo" class="btn btn-outline">Try the Demo</a>
+            </div>
+
+            <div class="hero-mockup">
+                <div class="mockup-container">
+                    <div class="mockup-header">
+                        <div class="dot dot-red"></div>
+                        <div class="dot dot-yellow"></div>
+                        <div class="dot dot-green"></div>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000" alt="Dashboard Preview" class="mockup-img">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="demo" style="padding: 4rem 0; background: rgba(5, 8, 16, 0.5);">
+        <div class="container" style="max-width: 800px;">
+            <div class="section-header" style="margin-bottom: 2rem;">
+                <h2>Try it Live</h2>
+                <p>See exactly what LeadGenPro can find in your market.</p>
+            </div>
+            
+            <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <div style="flex: 1;">
+                        <label style="display:block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Business Category</label>
+                        <input type="text" id="demo-cat" placeholder="e.g., Roofing" style="width:100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: white;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display:block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">City</label>
+                        <input type="text" id="demo-city" placeholder="e.g., Miami" style="width:100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: white;">
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
+                        <button onclick="runDemo()" class="btn btn-primary" id="btn-run-demo">Find Leads</button>
+                    </div>
+                </div>
+
+                <div id="demo-results" style="display: none; border-top: 1px solid var(--border-glass); padding-top: 2rem;">
+                    <h4 style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--cyan);">MATCHING OPPORTUNITIES FOUND:</h4>
+                    <div id="demo-list" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Mock leads go here -->
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Unlock full email, phone, and AI health audits for all leads.</p>
+                        <a href="register.html" class="btn btn-primary btn-sm">Join to Access Full List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Everything you need to grow</h2>
+                <p>One platform to discover, enrich, and engage high-value prospects.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-search"></i></div>
+                    <h3>AI Lead Discovery</h3>
+                    <p>Identify businesses without a website or with outdated local presence using our proprietary scouring engine.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-magic"></i></div>
+                    <h3>AI Personalization</h3>
+                    <p>Our AI analyzes every prospect's website health and business profile to generate unique, high-converting copy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-paper-plane"></i></div>
+                    <h3>Automated Outreach</h3>
+                    <p>Schedule multi-step follow-up campaigns that nurture leads until they are ready to book a call.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="fas fa-tachometer-alt"></i></div>
+                    <h3>Smart Score Engine</h3>
+                    <p>Focus only on the most qualified prospects. Our scoring algorithm tells you exactly who is most likely to convert.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>Three Steps to Success</h2>
+                <p>We've automated the entire top-of-funnel workflow.</p>
+            </div>
+            <div class="step-grid">
+                <div class="step">
+                    <span class="step-num">01</span>
+                    <h3>Scour & Find</h3>
+                    <p>Define your niche and location. Our engine builds a master list of high-intent local businesses.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">02</span>
+                    <h3>Personalize</h3>
+                    <p>AI scans their online presence to draft emails so relevant they can't be ignored.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">03</span>
+                    <h3>Scale</h3>
+                    <p>Set your campaigns live and watch your pipeline fill with qualified sales opportunities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that fits your growth ambitions.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <div class="price-header">
+                        <h4>Free Tier</h4>
+                        <div class="price-amount">$0 <span>/mo</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><i class="fas fa-check"></i> 50 Leads / month</li>
+                        <li><i class="fas fa-check"></i> Basic Lead Discovery</li>
+                        <li><i class="fas fa-times" style="color:#ef4444"></i> AI Personalization</li>
+                        <li><i class="fas fa-times" style="color:#ef4444"></i> Campaign Automation</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline">Start for free</a>
+                </div>
+                <div class="price-card featured">
+                    <div class="price-header">
+                        <h4>Scale Plan</h4>
+                        <div class="price-amount">$49 <span>/mo</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><i class="fas fa-check"></i> 500 Leads / month</li>
+                        <li><i class="fas fa-check"></i> Advanced Scouring</li>
+                        <li><i class="fas fa-check"></i> Full AI Personalization</li>
+                        <li><i class="fas fa-check"></i> Email Outreach Queue</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-primary">Start Free Trial</a>
+                </div>
+                <div class="price-card">
+                    <div class="price-header">
+                        <h4>Pro Agency</h4>
+                        <div class="price-amount">$199 <span>/mo</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><i class="fas fa-check"></i> Unlimited Leads</li>
+                        <li><i class="fas fa-check"></i> Bulk Processing</li>
+                        <li><i class="fas fa-check"></i> Multi-User Support</li>
+                        <li><i class="fas fa-check"></i> White-label Reports</li>
+                    </ul>
+                    <a href="register.html" class="btn btn-outline">Contact Sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>Loved by Growth Teams</h2>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"LeadGenPro cut our prospecting time by 80%. The AI personalizer is scarily good at getting responses."</p>
+                    <div class="user-info">
+                        <div class="user-avatar">JD</div>
+                        <div>
+                            <strong>James Dawson</strong><br>
+                            <span style="color:var(--text-muted); font-size:0.8rem;">CEO, CloudScale Agency</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"The only tool that actually finds businesses without websites. It's a goldmine for local agency consultants."</p>
+                    <div class="user-info">
+                        <div class="user-avatar" style="background:var(--cyan)">SR</div>
+                        <div>
+                            <strong>Sarah Reed</strong><br>
+                            <span style="color:var(--text-muted); font-size:0.8rem;">Freelance Marketing Lead</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="waitlist" class="waitlist" style="padding: 8rem 0; background: linear-gradient(to bottom, transparent, rgba(99, 102, 241, 0.05)); text-align: center; border-top: 1px solid var(--border-glass);">
+        <div class="container">
+            <div class="section-header">
+                <span class="badge" style="background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.2); color: var(--success);">Join the Inner Circle</span>
+                <h2>Get Early Access & Growth Tips</h2>
+                <p>Join 200+ agencies receiving weekly lead gen strategies and early priority for new AI features. No spam, ever.</p>
+            </div>
+            <div style="max-width: 500px; margin: 0 auto;">
+                <form id="waitlist-form" style="display: flex; gap: 0.5rem;">
+                    <input type="email" id="waitlist-email" placeholder="Enter your work email" required style="flex: 1; padding: 1rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius: 12px; color: white;">
+                    <button type="submit" class="btn btn-primary" id="btn-waitlist">Secure My Spot</button>
+                </form>
+                <div id="waitlist-msg" style="margin-top: 1rem; font-size: 0.9rem; display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-final" style="padding: 8rem 0; text-align: center;">
+         <div class="container">
+            <h2 style="font-size: 3rem; font-family: var(--font-headings); margin-bottom: 2rem;">Ready to dominate your market?</h2>
+            <div class="hero-actions">
+                <a href="register.html" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">Start Finding Clients Now</a>
+            </div>
+            <p style="margin-top: 2rem; color: var(--text-muted);">No credit card required. Cancel anytime.</p>
+         </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col" style="grid-column: span 1.5;">
+                    <a href="#" class="logo" style="margin-bottom: 1.5rem;">
+                        <i class="fas fa-bolt"></i> LeadGen<span>Pro</span>
+                    </a>
+                    <p style="color: var(--text-muted); font-size:0.9rem;">Empowering agencies and sales teams to discover high-value opportunities with cutting-edge AI technology.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#">Change Log</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 LeadGenPro. Built for builders. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('lgp_token');
+            if (token) {
+                const navLinks = document.querySelector('.nav-links');
+                const heroActions = document.querySelector('.hero-actions');
+                
+                // Update Nav
+                const trialBtn = navLinks.querySelector('.btn-primary');
+                if (trialBtn) {
+                    trialBtn.textContent = 'Go to Dashboard';
+                    trialBtn.href = 'dashboard.html';
+                }
+
+                // Update Hero CTA
+                const heroBtn = heroActions.querySelector('.btn-primary');
+                if (heroBtn) {
+                    heroBtn.textContent = 'Open Dashboard';
+                    heroBtn.href = 'dashboard.html';
+                }
+            }
+        });
+
+        // ────── DEMO LOGIC ──────
+        async function runDemo() {
+            const cat = document.getElementById('demo-cat').value || 'Business';
+            const city = document.getElementById('demo-city').value || 'Anywhere';
+            const btn = document.getElementById('btn-run-demo');
+            const results = document.getElementById('demo-results');
+            const list = document.getElementById('demo-list');
+
+            btn.disabled = true;
+            btn.textContent = 'Scanning...';
+            
+            // Simulating real search with mock delay
+            await new Promise(r => setTimeout(r, 2000));
+
+            const mockLeads = [
+                { name: `${cat} Specialist Pro`, health: 'Needs Website Overhaul', icon: 'fa-exclamation-triangle', color: '#ff9800' },
+                { name: `${city} ${cat} Group`, health: 'No SEO Presence', icon: 'fa-search-minus', color: '#f44336' },
+                { name: `The Modern ${cat} Co`, health: 'Mobile Incompatible', icon: 'fa-mobile-alt', color: '#ef5350' }
+            ];
+
+            list.innerHTML = mockLeads.map(l => `
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 1rem; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: 600;">${l.name}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Located in ${city}</div>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: ${l.color}; font-size: 0.8rem; font-weight: 600;">
+                        <i class="fas ${l.icon}"></i> ${l.health}
+                    </div>
+                </div>
+            `).join('');
+
+            results.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Find More Leads';
+        }
+
+        // ────── WAITLIST LOGIC ──────
+        document.getElementById('waitlist-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('waitlist-email').value;
+            const btn = document.getElementById('btn-waitlist');
+            const msg = document.getElementById('waitlist-msg');
+
+            btn.disabled = true;
+            btn.textContent = 'Joining...';
+
+            try {
+                const res = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await res.json();
+                
+                msg.textContent = res.ok ? '🚀 Success! You are on the list.' : ('⚠️ ' + data.error);
+                msg.style.color = res.ok ? 'var(--success)' : '#ef4444';
+                msg.style.display = 'block';
+                if(res.ok) document.getElementById('waitlist-form').style.display = 'none';
+            } catch (err) {
+                msg.textContent = '⚠️ Request failed. Try again.';
+                msg.style.display = 'block';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Secure My Spot';
+            }
+        });
+    </script>
+
+    <!-- ════ TESTIMONIALS ════ -->
+    <section id="testimonials" style="padding: 6rem 2rem; border-top: 1px solid rgba(255,255,255,0.06);">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <span style="display:inline-block;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);color:#f59e0b;padding:0.4rem 1rem;border-radius:100px;font-size:0.8rem;font-weight:600;letter-spacing:0.05em;margin-bottom:1rem;">⭐ Customer Reviews</span>
+                <h2 style="font-family:'Outfit',sans-serif;font-size:2.5rem;font-weight:800;color:white;margin-bottom:0.75rem;">Trusted by Freelancers &amp; Agencies</h2>
+                <p style="color:#64748b;max-width:500px;margin:0 auto;">Don't take our word for it — here's what our users are saying.</p>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;">
+                <!-- Testimonial 1 -->
+                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2rem;position:relative;">
+                    <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem;">★★★★★</div>
+                    <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;">"I was spending 3 hours a day manually finding leads on Google Maps. LeadGenPro replaced that entirely. I now have a full pipeline with zero effort. Closed 8 clients in my first month."</p>
+                    <div style="display:flex;align-items:center;gap:0.875rem;">
+                        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#06b6d4);display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;color:#fff;">M</div>
+                        <div><div style="font-weight:600;color:#e2e8f0;font-size:0.9rem;">Marcus R.</div><div style="font-size:0.78rem;color:#64748b;">Web Designer, Columbus OH</div></div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2rem;">
+                    <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem;">★★★★★</div>
+                    <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;">"The AI-generated emails are genuinely amazing — they sound completely personal, not like templates at all. My open rate went from 11% to 38% in the first week. This tool pays for itself."</p>
+                    <div style="display:flex;align-items:center;gap:0.875rem;">
+                        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#ef4444);display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;color:#fff;">S</div>
+                        <div><div style="font-weight:600;color:#e2e8f0;font-size:0.9rem;">Sofia A.</div><div style="font-size:0.78rem;color:#64748b;">Agency Owner, Phoenix AZ</div></div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2rem;">
+                    <div style="color:#f59e0b;font-size:1.1rem;margin-bottom:1rem;">★★★★★</div>
+                    <p style="color:#94a3b8;font-size:0.95rem;line-height:1.7;margin-bottom:1.5rem;">"The website health score feature is genius. I only pitch businesses that actually need what I sell — my closing rate went from 15% to 41%. LeadGenPro is now the core of my agency."</p>
+                    <div style="display:flex;align-items:center;gap:0.875rem;">
+                        <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#10b981,#06b6d4);display:flex;align-items:center;justify-content:center;font-family:'Outfit';font-weight:800;color:#fff;">J</div>
+                        <div><div style="font-weight:600;color:#e2e8f0;font-size:0.9rem;">James T.</div><div style="font-size:0.78rem;color:#64748b;">SEO Consultant, Austin TX</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ════ FOOTER ════ -->
+    <footer style="border-top:1px solid rgba(255,255,255,0.07);padding:4rem 2rem 2rem;">
+        <div style="max-width:1100px;margin:0 auto;">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem;">
+                <!-- Brand -->
+                <div>
+                    <div style="font-family:'Outfit';font-weight:800;font-size:1.5rem;background:linear-gradient(90deg,#06b6d4,#6366f1);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:1rem;">⚡ LeadGenPro</div>
+                    <p style="color:#64748b;font-size:0.875rem;line-height:1.7;max-width:280px;">AI-powered lead generation and personalized outreach for freelancers and agencies. Find clients. Close deals. Grow faster.</p>
+                </div>
+                <!-- Product -->
+                <div>
+                    <div style="font-family:'Outfit';font-weight:700;color:#fff;margin-bottom:1rem;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;">Product</div>
+                    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                        <a href="/how-it-works.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">How It Works</a>
+                        <a href="/pricing.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Pricing</a>
+                        <a href="/demo.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Live Demo</a>
+                        <a href="/case-studies.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Case Studies</a>
+                    </div>
+                </div>
+                <!-- Company -->
+                <div>
+                    <div style="font-family:'Outfit';font-weight:700;color:#fff;margin-bottom:1rem;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;">Company</div>
+                    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                        <a href="/contact.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Contact Us</a>
+                        <a href="/#testimonials" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Testimonials</a>
+                        <a href="/register.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Sign Up Free</a>
+                    </div>
+                </div>
+                <!-- Legal -->
+                <div>
+                    <div style="font-family:'Outfit';font-weight:700;color:#fff;margin-bottom:1rem;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;">Legal</div>
+                    <div style="display:flex;flex-direction:column;gap:0.6rem;">
+                        <a href="/privacy.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Privacy Policy</a>
+                        <a href="/terms.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Terms of Service</a>
+                        <a href="/refund.html" style="color:#64748b;text-decoration:none;font-size:0.875rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'">Refund Policy</a>
+                    </div>
+                </div>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+                <p style="color:#475569;font-size:0.8rem;">&copy; 2026 LeadGenPro. All rights reserved.</p>
+                <div style="display:flex;gap:1rem;">
+                    <a href="#" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:#64748b;text-decoration:none;font-size:0.9rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'" title="Twitter/X"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:#64748b;text-decoration:none;font-size:0.9rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;color:#64748b;text-decoration:none;font-size:0.9rem;" onmouseover="this.style.color='#06b6d4'" onmouseout="this.style.color='#64748b'" title="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
