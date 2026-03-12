@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup — LeadGenPro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-deep: #0a0e1a;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --cyan: #06b6d4;
+            --text: #f1f5f9;
+            --text-muted: #64748b;
+            --radius: 14px;
+        }
+
+        body {
+            background: var(--bg-deep);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .setup-wrapper {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .step-dot.completed {
+            background: var(--cyan);
+            color: white;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+        }
+
+        select option {
+            background: var(--bg-deep);
+            color: var(--text);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 1rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-outline {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="setup-wrapper">
+    <div class="card">
+        <div class="progress-bar">
+            <div class="step-dot active" id="dot-1">1</div>
+            <div class="step-dot" id="dot-2">2</div>
+            <div class="step-dot" id="dot-3">3</div>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="step-panel active" id="step-1">
+            <h2>Welcome to LeadGenPro!</h2>
+            <p>Let's tailor your experience. What best describes your business?</p>
+            <div class="form-group">
+                <label>Business Type</label>
+                <div style="position: relative;">
+                    <select id="businessType">
+                        <option value="Marketing Agency">Marketing Agency</option>
+                        <option value="SaaS">SaaS</option>
+                        <option value="Freelancer">Freelancer</option>
+                        <option value="Local Business">Local Business</option>
+                    </select>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 1rem; top: 1.1rem; color: var(--text-muted); pointer-events: none;"></i>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="goToStep(2)">Continue</button>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-panel" id="step-2">
+            <h2>Target Industry</h2>
+            <p>Who is your ideal customer target?</p>
+            <div class="form-group">
+                <label>Industry Niche</label>
+                <div style="position: relative;">
+                    <select id="industry">
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Tech">Tech</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Home Services">Home Services (Roofing, Plumbing etc.)</option>
+                    </select>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 1rem; top: 1.1rem; color: var(--text-muted); pointer-events: none;"></i>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-outline" onclick="goToStep(1)">Back</button>
+                <button class="btn-primary" onclick="goToStep(3)">Continue</button>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-panel" id="step-3">
+            <h2>Target Location</h2>
+            <p>Where are your prospects located?</p>
+            <div class="form-group">
+                <label>Region</label>
+                <div style="position: relative;">
+                    <select id="location">
+                        <option value="USA">USA</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Europe">Europe</option>
+                        <option value="Global">Global / Anywhere</option>
+                    </select>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 1rem; top: 1.1rem; color: var(--text-muted); pointer-events: none;"></i>
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn-outline" onclick="goToStep(2)">Back</button>
+                <button class="btn-primary" onclick="finishSetup()">Complete Setup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function goToStep(step) {
+        document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.step-dot').forEach(d => {
+            d.classList.remove('active');
+            d.classList.remove('completed');
+        });
+
+        document.getElementById(`step-${step}`).classList.add('active');
+
+        for (let i = 1; i < step; i++) {
+            document.getElementById(`dot-${i}`).classList.add('completed');
+        }
+        document.getElementById(`dot-${step}`).classList.add('active');
+    }
+
+    function finishSetup() {
+        const businessType = document.getElementById('businessType').value;
+        const industry = document.getElementById('industry').value;
+        const locationTarget = document.getElementById('location').value;
+
+        // Save temporarily in localStorage
+        const setupData = { businessType, industry, locationTarget };
+        localStorage.setItem('lgp_setup_config', JSON.stringify(setupData));
+        localStorage.setItem('lgp_onboarded', 'true');
+
+        const btn = event.currentTarget;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Finalizing...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            window.location.href = '/dashboard';
+        }, 800);
+    }
+</script>
+</body>
+</html>

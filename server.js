@@ -77,6 +77,10 @@ app.get('/dashboard', requirePageAuth, (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
+app.get('/setup', requirePageAuth, (req, res) => {
+    return res.sendFile(path.join(__dirname, 'public', 'setup.html'));
+});
+
 // Auth UI routes
 app.get('/login', (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'login.html'));
