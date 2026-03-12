@@ -431,62 +431,7 @@
                         <div style="font-size: 4rem; margin-bottom: 2rem;">🚀</div>
                         <h1 class="onboarding-title">Welcome to LeadGenPro</h1>
                         <p class="onboarding-subtitle">Find your first clients in minutes. Let's set up your account.</p>
-                        <a href="/setup" class="btn btn-primary" style="padding: 1rem 3rem; margin: 0 auto; display: inline-block; text-decoration: none;">Start Setup</a>
-                    </div>
-
-                    <div id="setup-wizard" style="display: none;">
-                        <div class="wizard-steps">
-                            <div class="wizard-dot active" id="dot-1">1</div>
-                            <div class="wizard-dot" id="dot-2">2</div>
-                            <div class="wizard-dot" id="dot-3">3</div>
-                        </div>
-
-                        <!-- Step 1: Category -->
-                        <div class="wizard-panel active" id="wizard-step-1">
-                            <h3>Whom are you looking for?</h3>
-                            <p style="color:var(--text-muted); margin-bottom: 2rem;">Select your target business category.</p>
-                            <div class="wizard-input-group">
-                                <label>Target Niche</label>
-                                <select id="wizard-category">
-                                    <option value="Roofing">Roofing Contractors</option>
-                                    <option value="Plumbing">Plumbing Services</option>
-                                    <option value="Real Estate">Real Estate Agencies</option>
-                                    <option value="Marketing">Marketing Agencies</option>
-                                    <option value="Solar">Solar Installation</option>
-                                </select>
-                            </div>
-                            <div class="wizard-nav">
-                                <button class="btn btn-primary" onclick="nextStep(2)">Continue <i class="fas fa-arrow-right"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Step 2: City -->
-                        <div class="wizard-panel" id="wizard-step-2">
-                            <h3>Where are they located?</h3>
-                            <p style="color:var(--text-muted); margin-bottom: 2rem;">Enter the city you want to target.</p>
-                            <div class="wizard-input-group">
-                                <label>City Name</label>
-                                <input type="text" id="wizard-city" placeholder="e.g. Columbus">
-                            </div>
-                            <div class="wizard-nav">
-                                <button class="btn btn-outline" onclick="nextStep(1)">Back</button>
-                                <button class="btn btn-primary" onclick="nextStep(3)">Next <i class="fas fa-arrow-right"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Step 3: Launch -->
-                        <div class="wizard-panel" id="wizard-step-3">
-                            <h3>Ready to grow?</h3>
-                            <p style="color:var(--text-muted); margin-bottom: 2rem;">We will create your first campaign and find leads immediately.</p>
-                            <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-glass); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; text-align: left;">
-                                <div style="margin-bottom: 0.5rem;"><i class="fas fa-check" style="color:var(--success); margin-right: 10px;"></i> Campaign: <strong>My First Campaign</strong></div>
-                                <div id="summary-text" style="margin-bottom: 0.5rem;"></div>
-                            </div>
-                            <div class="wizard-nav">
-                                <button class="btn btn-outline" onclick="nextStep(2)">Back</button>
-                                <button class="btn btn-primary" onclick="finishOnboarding()">Generate First Leads <i class="fas fa-bolt"></i></button>
-                            </div>
-                        </div>
+                        <a href="/setup" class="btn btn-primary">Start Setup</a>
                     </div>
                 </div>
             </div>

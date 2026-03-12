@@ -215,52 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // ── ONBOARDING WIZARD LOGIC ──
-    window.startWizard = () => {
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('setup-wizard').style.display = 'block';
-    };
-
-    window.nextStep = (step) => {
-        // Hide all steps
-        document.querySelectorAll('.wizard-panel').forEach(p => p.classList.remove('active'));
-        document.querySelectorAll('.wizard-dot').forEach(d => d.classList.remove('active'));
-
-        // Show target step
-        document.getElementById(`wizard-step-${step}`).classList.add('active');
-        document.getElementById(`dot-${step}`).classList.add('active');
-
-        // Mark previous dots as completed
-        for (let i = 1; i < step; i++) {
-            document.getElementById(`dot-${i}`).classList.add('completed');
-        }
-
-        // Update summary if step 3
-        if (step === 3) {
-            const cat = document.getElementById('wizard-category').value;
-            const city = document.getElementById('wizard-city').value || 'Anywhere';
-            document.getElementById('summary-text').innerHTML = `<i class="fas fa-check" style="color:var(--success); margin-right: 10px;"></i> Targeting: <strong>${cat}</strong> in <strong>${city}</strong>`;
-        }
-    };
-
-    window.finishOnboarding = async () => {
-        const cat = document.getElementById('wizard-category').value;
-        const city = document.getElementById('wizard-city').value || 'Anywhere';
-        const modal = document.getElementById('onboarding-modal');
-
-        modal.style.display = 'none';
-        localStorage.setItem('lgp_onboarded', 'true');
-
-        // Trigger First Lead Search with custom Category/City
-        triggerAction('find', { 
-            category: cat, 
-            location: city, 
-            campaignName: 'My First Campaign' 
-        }); 
-        
-        alert(`Setting up "My First Campaign" for ${cat} in ${city}. Finding leads now...`);
-    };
-
     // ── DASHBOARD TIPS ──
     const tips = [
         "Start by generating leads for your niche.",
