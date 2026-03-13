@@ -13,7 +13,7 @@ require('dotenv').config();
  *   node src/index.js send      <- Phase 4: LIVE campaign
  */
 async function main() {
-    const apiKey = process.env.APIFY_API_KEY || '';
+    const apiKey = process.env.APIFY_TOKEN || process.env.APIFY_API_KEY || '';
     console.log(`\n[Diagnostic] Executing main script: ${__filename}`);
     console.log(`[Credential Check] Using Apify Key starting with: ${apiKey.substring(0, 12)}...\n`);
 

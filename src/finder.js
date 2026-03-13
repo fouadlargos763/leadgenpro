@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const client = new ApifyClient({
-    token: process.env.APIFY_API_KEY,
+    token: process.env.APIFY_TOKEN || process.env.APIFY_API_KEY,
 });
 
 /**
