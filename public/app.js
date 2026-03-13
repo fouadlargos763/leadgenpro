@@ -610,11 +610,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.previewEmail = async (index) => {
         const lead = window.currentLeads[index];
         if (!lead) return;
+        window.currentPreviewLead = lead; // store for send button
 
         try {
             document.getElementById('preview-subject').textContent = `Loading preview...`;
             document.getElementById('preview-body').innerHTML = `Please wait...`;
             document.getElementById('preview-modal').style.display = 'flex';
+            
+            // Reset edit state
+            const bodyEl = document.getElementById('preview-body');
+            bodyEl.contentEditable = false;
+            bodyEl.style.background = 'white';
 
             const response = await fetch('/api/preview', {
                 method: 'POST',
@@ -630,6 +636,54 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('preview-body').innerHTML = `<span style="color:red">Failed to generate preview.</span>`;
         }
     };
+
+    // Wire up Preview Modal Actions
+    const btnSendPreview = document.getElementById('btn-send-preview');
+    if (btnSendPreview) {
+        btnSendPreview.onclick = async () => {
+            if (!window.currentPreviewLead) return;
+            const lead = window.currentPreviewLead;
+            btnSendPreview.disabled = true;
+            btnSendPreview.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            try {
+                const res = await fetch('/api/leads/send-one', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        leadId: lead.id || lead.name, 
+                        campaign: currentCampaignFile,
+                        customBody: document.getElementById('preview-body').innerHTML 
+                    })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('Email sent successfully!');
+                    previewModal.style.display = 'none';
+                    loadLeads();
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (err) {
+                alert('Failed to send email: ' + err.message);
+            } finally {
+                btnSendPreview.disabled = false;
+                btnSendPreview.innerHTML = '<i class="fas fa-paper-plane"></i> Send Email';
+            }
+        };
+    }
+
+    const btnEditPreview = document.querySelector('#preview-modal .btn-secondary i.fa-edit')?.parentElement;
+    if (btnEditPreview) {
+        btnEditPreview.onclick = () => {
+            const bodyEl = document.getElementById('preview-body');
+            const isEditing = bodyEl.contentEditable === 'true';
+            bodyEl.contentEditable = !isEditing;
+            bodyEl.style.background = isEditing ? 'white' : '#f8fafc';
+            bodyEl.style.border = isEditing ? 'none' : '2px dashed var(--primary)';
+            btnEditPreview.innerHTML = isEditing ? '<i class="fas fa-edit"></i> Edit Draft' : '<i class="fas fa-save"></i> Finish Edit';
+        };
+    }
 
     window.viewTimeline = async (index) => {
         const lead = window.currentLeads[index];

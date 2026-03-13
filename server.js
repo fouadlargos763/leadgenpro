@@ -900,6 +900,52 @@ app.post('/api/preview', requireAuth, async (req, res) => {
 });
 
 /**
+ * API: Send a single outreach email (USER-SCOPED)
+ */
+app.post('/api/leads/send-one', requireAuth, async (req, res) => {
+    const uid = req.user.id;
+    const { leadId, campaign, customBody } = req.body;
+    if (!leadId) return res.status(400).json({ error: 'Lead ID required' });
+
+    const targetPath = getLeadsPath(uid, campaign);
+    if (!targetPath) return res.status(404).json({ error: 'Data file not found' });
+
+    try {
+        const leads = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+        const leadIndex = leads.findIndex(l => (l.id === leadId || l.name === leadId));
+        if (leadIndex === -1) return res.status(404).json({ error: 'Lead not found in file' });
+
+        const lead = leads[leadIndex];
+        
+        // Use custom body if provided, otherwise generate default
+        const emailContent = customBody ? { html: customBody, subject: 'Follow up' } : generateEmailContent(lead, campaign || 'default', uid);
+        
+        await sendOutreachEmail(lead, false, campaign, uid, customBody); 
+        
+        // Update lead status
+        leads[leadIndex].status = 'Contacted';
+        fs.writeFileSync(targetPath, JSON.stringify(leads, null, 2));
+
+        logActivity(uid, leadId, 'email_sent', { type: 'manual', campaign });
+        
+        // Add to follow-up queue
+        const followupQueue = getFollowupQueue(uid);
+        const nextSendStr = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString();
+        if (!followupQueue.find(q => q.leadId === leadId)) {
+            followupQueue.push({ leadId, campaign, step: 1, nextSend: nextSendStr });
+            saveFollowupQueue(uid, followupQueue);
+        }
+
+        invalidateUserCache(uid);
+
+        return res.json({ success: true });
+    } catch (err) {
+        console.error('Send One Error:', err);
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
  * API: Analyze a single lead's website on demand (USER-SCOPED)
  */
 app.post('/api/analyze', requireAuth, async (req, res) => {
