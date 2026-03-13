@@ -35,7 +35,7 @@ const { startBackupScheduler } = require('./backup');
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 const dataDir = path.resolve(__dirname, '..', 'data');
 
 /**
@@ -345,7 +345,7 @@ app.get('/api/referral', requireAuth, (req, res) => {
     
     res.json({
         referralCode: user.referralCode,
-        referralLink: `${process.env.APP_URL || 'http://localhost:' + port}/register.html?ref=${user.referralCode}`,
+        referralLink: `${process.env.APP_URL || 'http://localhost:' + PORT}/register.html?ref=${user.referralCode}`,
         count: refs.length,
         bonusLeads
     });
@@ -381,7 +381,7 @@ app.post('/api/referral/invite', requireAuth, inviteLimiter, async (req, res) =>
     if (!user || !user.referralCode) {
         return res.status(404).json({ error: 'User referral code not found.' });
     }
-    const referralLink = `${process.env.APP_URL || 'http://localhost:' + port}/register.html?ref=${user.referralCode}`;
+    const referralLink = `${process.env.APP_URL || 'http://localhost:' + PORT}/register.html?ref=${user.referralCode}`;
 
     logger.info('Referral invites sent', { uid, count: validEmails.length });
     
@@ -1437,13 +1437,7 @@ app.get('/api/leads/export', requireAuth, (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`\n=======================================`);
-    console.log(`🚀 LeadGen Pro Backend Live on port ${port}`);
-    console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`📄 Legal pages: /privacy.html | /terms.html | /refund.html | /contact.html`);
-    console.log(`📊 Admin: /admin.html | /admin/analytics | /admin/revenue | /admin/referrals`);
-    console.log(`=======================================\n`);
-    // Start daily backup scheduler
+app.listen(PORT, () => {
+    console.log(`Server running on ${PORT}`);
     startBackupScheduler();
 });
