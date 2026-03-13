@@ -1,5 +1,5 @@
 // --- LeadGenPro Backend Server ---
-// Corrected module paths for production deployment
+// Module path optimization for Render production deployment
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
