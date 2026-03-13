@@ -9,7 +9,9 @@ async function loadClients() {
             headers: { Authorization: `Bearer ${localStorage.getItem('lgp_token')}` }
         });
         const data = await res.json();
+        console.log('[Clients] API Data:', data);
         rawClients = data.clients || [];
+        console.log('[Clients] Raw Clients count:', rawClients.length);
         renderClients(rawClients);
     } catch (error) {
         console.error('Failed to load clients:', error);
@@ -85,6 +87,39 @@ async function saveClientEdit() {
         loadClients();
     } catch (error) {
         alert('Failed to save client: ' + error.message);
+    }
+}
+
+function openAddClientModal() {
+    document.getElementById('client-add-modal').style.display = 'flex';
+}
+
+function closeAddClientModal() {
+    document.getElementById('client-add-modal').style.display = 'none';
+}
+
+async function submitAddClient() {
+    const name = document.getElementById('add-client-name').value;
+    const email = document.getElementById('add-client-email').value;
+    const status = document.getElementById('add-client-status').value;
+
+    if(!name) return alert('Company name is required.');
+
+    try {
+        const res = await fetch('/api/leads/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('lgp_token')}` },
+            body: JSON.stringify({ name, email, status })
+        });
+        const data = await res.json();
+        if(res.ok) {
+            closeAddClientModal();
+            loadClients();
+        } else {
+            alert(data.error);
+        }
+    } catch (err) {
+        alert('Failed to add client.');
     }
 }
 

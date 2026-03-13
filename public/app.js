@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (fmodal) fmodal.style.display = 'flex';
                 return;
             }
-            triggerAction(action);
+            triggerAction(action, { campaignFile: currentCampaignFile });
         });
     });
 
@@ -127,18 +127,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (findBtn) {
         findBtn.addEventListener('click', () => {
             const fmodal = document.getElementById('find-modal');
-            const category = document.getElementById('find-category').value.trim();
-            const location = document.getElementById('find-location').value.trim();
+            const industry = document.getElementById('find-industry').value.trim();
+            const city = document.getElementById('find-city').value.trim();
+            const country = document.getElementById('find-country').value.trim();
             const maxLeads = document.getElementById('find-limit').value || 50;
 
-            if (!category || !location) {
-                alert('Both Category and Location are required!');
+            if (!industry || (!city && !country)) {
+                alert('Industry and at least one Location (City/Country) are required!');
                 return;
             }
 
             if (fmodal) fmodal.style.display = 'none';
-            const campaignName = `${category} in ${location}`;
-            triggerAction('find', { category, location, campaignName, maxLeads: parseInt(maxLeads) });
+            const locationCombined = [city, country].filter(Boolean).join(', ');
+            const campaignName = `${industry} in ${locationCombined}`;
+            triggerAction('find', { category: industry, location: locationCombined, campaignName, maxLeads: parseInt(maxLeads) });
         });
     }
 
@@ -439,6 +441,37 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
+    window.exportCSV = () => {
+        if (!window.activeLeads || !window.activeLeads.length) return alert('No leads to export.');
+        
+        const headers = ["Name", "Email", "Phone", "Website", "Status", "Address", "City", "Category"];
+        const csvRows = [headers.join(",")];
+        
+        window.activeLeads.forEach(l => {
+            const row = [
+                `"${(l.name || '').replace(/"/g, '""')}"`,
+                `"${(l.email || '').replace(/"/g, '""')}"`,
+                `"${(l.phone || '').replace(/"/g, '""')}"`,
+                `"${(l.website || '').replace(/"/g, '""')}"`,
+                `"${(l.status || 'New').replace(/"/g, '""')}"`,
+                `"${(l.address || '').replace(/"/g, '""')}"`,
+                `"${(l.city || '').replace(/"/g, '""')}"`,
+                `"${(l.category || '').replace(/"/g, '""')}"`
+            ];
+            csvRows.push(row.join(","));
+        });
+        
+        const csvContent = csvRows.join("\n");
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `leads_export_${Date.now()}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     function updateStats(stats) {
         statsElements.total.textContent = stats.total || 0;
         statsElements.withEmails.textContent = stats.withEmails || 0;
@@ -539,12 +572,22 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'flex';
         consoleOutput.innerHTML = `[System] Initiating ${action.toUpperCase()} process...\n`;
 
+        const token = localStorage.getItem('lgp_token');
+
         try {
             const response = await fetch('/api/action', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': token ? `Bearer ${token}` : ''
+                },
                 body: JSON.stringify({ action, ...params })
             });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `Server responded with ${response.status}`);
+            }
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder();

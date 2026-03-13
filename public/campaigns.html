@@ -35,6 +35,12 @@
                         <span class="user-role" id="user-email" style="font-size:0.7rem; opacity:0.6;"></span>
                     </div>
                 </div>
+                <div style="margin-top:0.75rem; padding: 0 0.5rem;">
+                    <button id="btn-logout"
+                        style="width:100%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; padding:0.5rem; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:background 0.2s;">
+                        <i class="fas fa-sign-out-alt" style="margin-right:5px;"></i> Sign Out
+                    </button>
+                </div>
             </div>
         </aside>
 
@@ -149,17 +155,23 @@
                 <button class="close-modal" onclick="document.getElementById('find-modal').style.display='none'">&times;</button>
             </div>
             <div class="modal-body">
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Category (Required)</label>
-                    <input type="text" id="find-category" placeholder="e.g. Dentist, Plumber, Marketing" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                <div style="margin-bottom: 1.25rem;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase;">Industry</label>
+                    <input type="text" id="find-industry" placeholder="e.g. Real Estate, Marketing, Dentist" style="width: 100%; padding: 0.85rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
                 </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Location (Required)</label>
-                    <input type="text" id="find-location" placeholder="e.g. Austin, TX" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem;">
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase;">City</label>
+                        <input type="text" id="find-city" placeholder="e.g. New York" style="width: 100%; padding: 0.85rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                    <div>
+                        <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase;">Country</label>
+                        <input type="text" id="find-country" placeholder="e.g. USA" style="width: 100%; padding: 0.85rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
                 </div>
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Lead Limit (Optional)</label>
-                    <input type="number" id="find-limit" placeholder="50" min="1" max="100" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                <div>
+                    <label style="display: block; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.4rem; text-transform: uppercase;">Number of leads to collect</label>
+                    <input type="number" id="find-limit" placeholder="50" min="1" max="200" value="50" style="width: 100%; padding: 0.85rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">

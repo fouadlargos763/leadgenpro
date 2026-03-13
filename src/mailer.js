@@ -22,7 +22,8 @@ function generateEmailContent(lead, campaignName = 'default', uid = '') {
     const leadId = lead.id || encodeURIComponent(businessName);
     const uidParam = uid ? `&uid=${uid}` : '';
 
-    const trackingPixel = `<img src="http://localhost:3000/track/open?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}" width="1" height="1" style="display:none;" />`;
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    const trackingPixel = `<img src="${baseUrl}/track/open?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}" width="1" height="1" style="display:none;" />`;
 
     const aiHook = lead.aiHook ? `${lead.aiHook}\n\n` : '';
     const aiHookHtml = lead.aiHook ? `<p>${lead.aiHook}</p>` : '';
@@ -32,8 +33,9 @@ function generateEmailContent(lead, campaignName = 'default', uid = '') {
         const portfolioUrl = 'https://myportfolio.com';
         const bookingUrl = 'https://calendly.com/mylocalbooking';
 
-        const trackedPortfolio = `http://localhost:3000/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(portfolioUrl)}`;
-        const trackedBooking = `http://localhost:3000/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(bookingUrl)}`;
+        const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+        const trackedPortfolio = `${baseUrl}/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(portfolioUrl)}`;
+        const trackedBooking = `${baseUrl}/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(bookingUrl)}`;
 
         const subject = `Helping ${businessName} get more local project leads in Columbus`;
         const text = `Hi ${businessName} team,\n\n${aiHook}I was recently looking at local contractors in Columbus and came across your company listing.\n\nI noticed you don't have a website for your business yet. In our local market, the first thing most homeowners do when they need a contractor is search online to request a quote or see if a company is legitimate. By not having a professional landing page, you're likely missing out on local quote requests that are going straight to your competitors instead.\n\nI specialize in building simple, high-converting landing pages for construction companies that help you:\n1. Show up when local customers search for your services.\n2. Collect project details and quote requests automatically.\n3. Build trust with a professional online portfolio of your work.\n\nCheck out our recent work here:\n${trackedPortfolio}\n\nWould you be open to a 10-minute "no-pressure" chat this week? I'd love to show you how we can get more local leads coming directly to your phone.\n\nBook a time here: ${trackedBooking}\n\nBest regards,\n\n[Your Name]\nConstruction Web Growth Specialist`;
@@ -58,9 +60,10 @@ ${aiHookHtml}
         const portfolioUrl = 'https://myportfolio.com';
         const bookingUrl = 'https://calendly.com/mylocalbooking';
 
-        const trackedPortfolio = `http://localhost:3000/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(portfolioUrl)}`;
-        const trackedBooking = `http://localhost:3000/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(bookingUrl)}`;
-        const trackedWebsite = `http://localhost:3000/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(lead.website)}`;
+        const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+        const trackedPortfolio = `${baseUrl}/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(portfolioUrl)}`;
+        const trackedBooking = `${baseUrl}/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(bookingUrl)}`;
+        const trackedWebsite = `${baseUrl}/track/click?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}&url=${encodeURIComponent(lead.website)}`;
 
         const subject = `Improving ${businessName}'s booking conversion rates in Columbus`;
         const text = `Hi ${businessName} team,\n\n${aiHook}I was recently looking at your website at ${trackedWebsite} and really liked the work you're showcasing in the Columbus area.\n\nAs a specialist in high-performance web design for local contractors, I notice many sites in our industry look great but could be converted into even more of a lead-generation machine. Small tweaks to how potential customers request quotes or view your portfolio can often lead to a 20-30% increase in monthly inquiries.\n\nI've put together a few ideas on how we could modernize your online presence to ensure no potential projects are slipping through the cracks.\n\nCheck out examples of our high-converting designs here:\n${trackedPortfolio}\n\nWould you be open to a quick 10-minute chat this week to see if these improvements could help grow your local booking numbers?\n\nBook a time here: ${trackedBooking}\n\nBest regards,\n\n[Your Name]\nConversion Optimization Specialist`;
@@ -125,7 +128,8 @@ function generateFollowUpContent(lead, step, campaignName = 'default', uid = '')
     const businessName = lead.title || lead.name || 'your business';
     const leadId = lead.id || encodeURIComponent(businessName);
     const uidParam = uid ? `&uid=${uid}` : '';
-    const trackingPixel = `<img src="http://localhost:3000/track/open?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}" width="1" height="1" style="display:none;" />`;
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    const trackingPixel = `<img src="${baseUrl}/track/open?leadId=${leadId}&campaign=${encodeURIComponent(campaignName)}${uidParam}" width="1" height="1" style="display:none;" />`;
 
     let subject = '';
     let html = '';

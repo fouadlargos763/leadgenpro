@@ -46,7 +46,7 @@ function campaignStatsKey(userId) {
  * @param {string} userId
  */
 function invalidateUserCache(userId) {
-    const keys = cache.keys().filter(k => k.includes(`::${userId}::`));
+    const keys = cache.keys().filter(k => k.includes(`::${userId}`) || k.includes(`${userId}::`));
     if (keys.length > 0) {
         cache.del(keys);
     }

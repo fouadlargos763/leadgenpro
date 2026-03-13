@@ -9,15 +9,22 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit
 
       - name: Deploy to Render
-        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        if: github.ref == 'refs/heads/main'
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "Error: RENDER_DEPLOY_HOOK secret is not set."
+            exit 1
+          fi
+          curl -f -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}

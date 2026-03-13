@@ -59,14 +59,19 @@ function launchNewCampaign() {
             // Pre-fill the campaign name to match the input if provided
             const inputName = document.getElementById('camp-name').value;
             if(inputName) {
-                document.getElementById('find-category').value = inputName;
+                document.getElementById('find-industry').value = inputName;
             }
         } else {
             alert('Scraper component is currently offline. Please wait or check active campaigns.');
         }
     } else {
-        alert('Internal sandbox broadcast selected. This will queue emails natively across all existing stored clients.');
-        // In real execution, this would trigger triggerAction('send', ...) on all known leads.
+        const campaignName = document.getElementById('camp-name').value || 'Sandbox Broadcast';
+        if (typeof triggerAction !== 'undefined') {
+             triggerAction('send', { campaignName });
+             alert('Broadcast sequence initiated. Emails are being queued for all existing leads.');
+        } else {
+             alert('Action framework failed to bind. Please reload page.');
+        }
     }
 }
 
@@ -90,18 +95,20 @@ setTimeout(() => {
         btnExecuteFind.replaceWith(btnExecuteFind.cloneNode(true)); // remove old listeners assigned by app.js
         const newBtn = document.getElementById('btn-execute-find');
         newBtn.addEventListener('click', () => {
-             const category = document.getElementById('find-category').value.trim();
-             const location = document.getElementById('find-location').value.trim();
+             const industry = document.getElementById('find-industry').value.trim();
+             const city = document.getElementById('find-city').value.trim();
+             const country = document.getElementById('find-country').value.trim();
              const maxLeads = document.getElementById('find-limit').value || 50;
 
-             if (!category || !location) {
-                 alert('Both Category and Location are required!');
+             if (!industry || (!city && !country)) {
+                 alert('Industry and at least one Location (City/Country) are required!');
                  return;
              }
 
              document.getElementById('find-modal').style.display = 'none';
-             const campaignName = `${category} in ${location}`;
-             triggerAction('find', { category, location, campaignName, maxLeads: parseInt(maxLeads) });
+             const locationCombined = [city, country].filter(Boolean).join(', ');
+             const campaignName = `${industry} in ${locationCombined}`;
+             triggerAction('find', { category: industry, location: locationCombined, campaignName, maxLeads: parseInt(maxLeads) });
         });
     }
 }, 500); // Give app.js time to execute first so we can cleanly hook.

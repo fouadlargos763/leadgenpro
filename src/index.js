@@ -26,9 +26,10 @@ async function main() {
         const category = process.argv[3] || 'marketing agencies';
         const location = process.argv[4] || 'Columbus, Ohio';
         const campaignName = process.argv[5] || null;
+        const maxLeads = parseInt(process.argv[6]) || 50;
 
         console.log('--- Phase 1: Discovery ---');
-        const leads = await findBusinessesWithoutWebsites(category, location);
+        const leads = await findBusinessesWithoutWebsites(category, location, maxLeads);
         const filePath = saveLeads(leads, campaignName);
         console.log(`\nNext step: Review or run enrichment: node src/index.js enrich`);
     }
@@ -80,6 +81,28 @@ async function main() {
         const filePath = saveEnrichedLeads(mockedLeads);
         console.log(`\n[Success] Created mock data file: ${path.basename(filePath)}`);
         console.log('>>> IMPORTANT: Now run: node src/index.js mail');
+    }
+
+    else if (action === 'mock-find') {
+        const category = process.argv[3] || 'SaaS';
+        const location = process.argv[4] || 'Global';
+        const campaignName = process.argv[5] || null;
+
+        console.log('--- Phase 1: MOCK Discovery ---');
+        const mockLeads = Array.from({length: 10}, (_, i) => ({
+            id: `mock_${Date.now()}_${i}`,
+            name: `Mock Business ${i+1}`,
+            phone: `555-010${i}`,
+            address: `123 Mock St, ${location}`,
+            email: i % 2 === 0 ? `contact${i}@mock${i}.com` : null,
+            website: i % 3 === 0 ? `https://mockbusiness${i}.com` : null,
+            googleMapsUrl: `https://maps.google.com/?q=mock+business+${i}`,
+            category: category,
+            hasWebsite: i % 3 === 0
+        }));
+
+        const filePath = saveLeads(mockLeads, campaignName);
+        console.log(`\n[Success] Created mock search results: ${path.basename(filePath)}`);
     }
 
     else if (action === 'mail' || action === 'send') {
