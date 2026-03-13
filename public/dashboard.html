@@ -22,13 +22,13 @@
             </div>
             <nav class="sidebar-nav">
                 <ul>
-                    <li class="active"><a href="#"><i class="fas fa-th-large"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fas fa-users"></i> Clients</a></li>
-                    <li><a href="#"><i class="fas fa-bullhorn"></i> Campaigns</a></li>
-                    <li><a href="#"><i class="fas fa-chart-line"></i> Pipeline</a></li>
-                    <li><a href="pricing.html"><i class="fas fa-credit-card"></i> Billing</a></li>
-                    <li id="nav-admin" style="display:none;"><a href="admin.html" style="color: var(--gold);"><i class="fas fa-user-shield"></i> Admin</a></li>
-                    <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+                    <li class="active"><a href="/dashboard"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li><a href="/clients"><i class="fas fa-users"></i> Clients</a></li>
+                    <li><a href="/campaigns"><i class="fas fa-bullhorn"></i> Campaigns</a></li>
+                    <li><a href="/pipeline"><i class="fas fa-chart-line"></i> Pipeline</a></li>
+                    <li><a href="/billing"><i class="fas fa-credit-card"></i> Billing</a></li>
+                    <li id="nav-admin" style="display:none;"><a href="/admin.html" style="color: var(--gold);"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    <li><a href="/settings"><i class="fas fa-cog"></i> Settings</a></li>
                 </ul>
             </nav>
             <div class="sidebar-footer">
@@ -423,6 +423,34 @@
             </div>
         </div>
 
+
+        <!-- Find Leads Modal -->
+        <div id="find-modal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 500px;">
+                <div class="modal-header">
+                    <h3><i class="fas fa-search-location" style="color: var(--primary); margin-right: 8px;"></i> Find New Leads</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Category (Required)</label>
+                        <input type="text" id="find-category" placeholder="e.g. Dentist, Plumber, Marketing" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Location (Required)</label>
+                        <input type="text" id="find-location" placeholder="e.g. Austin, TX" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Lead Limit (Optional)</label>
+                        <input type="number" id="find-limit" placeholder="50" min="1" max="100" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                    </div>
+                </div>
+                <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
+                    <button class="btn btn-secondary close-modal" type="button">Cancel</button>
+                    <button class="btn btn-primary" id="btn-execute-find" type="button"><i class="fas fa-bolt"></i> Start Search</button>
+                </div>
+            </div>
+        </div>
 
         <div id="onboarding-modal" class="modal" style="display: none;">
             <div class="modal-content" style="max-width: 650px;">

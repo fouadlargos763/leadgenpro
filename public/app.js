@@ -94,6 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
     actionButtons.forEach(btn => {
         btn.addEventListener('click', () => {
             const action = btn.getAttribute('data-action');
+            if (action === 'find') {
+                const fmodal = document.getElementById('find-modal');
+                if (fmodal) fmodal.style.display = 'flex';
+                return;
+            }
             triggerAction(action);
         });
     });
@@ -104,6 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (previewModal) previewModal.style.display = 'none';
             if (timelineModal) timelineModal.style.display = 'none';
             if (analysisModal) analysisModal.style.display = 'none';
+            const fmodal = document.getElementById('find-modal');
+            if (fmodal) fmodal.style.display = 'none';
         });
     });
 
@@ -112,7 +119,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target == previewModal) previewModal.style.display = 'none';
         if (event.target == timelineModal) timelineModal.style.display = 'none';
         if (event.target == analysisModal) analysisModal.style.display = 'none';
+        const fmodal = document.getElementById('find-modal');
+        if (event.target == fmodal) fmodal.style.display = 'none';
     };
+
+    const findBtn = document.getElementById('btn-execute-find');
+    if (findBtn) {
+        findBtn.addEventListener('click', () => {
+            const fmodal = document.getElementById('find-modal');
+            const category = document.getElementById('find-category').value.trim();
+            const location = document.getElementById('find-location').value.trim();
+            const maxLeads = document.getElementById('find-limit').value || 50;
+
+            if (!category || !location) {
+                alert('Both Category and Location are required!');
+                return;
+            }
+
+            if (fmodal) fmodal.style.display = 'none';
+            const campaignName = `${category} in ${location}`;
+            triggerAction('find', { category, location, campaignName, maxLeads: parseInt(maxLeads) });
+        });
+    }
 
     window.currentLeads = [];
 

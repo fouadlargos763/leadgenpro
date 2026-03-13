@@ -81,6 +81,13 @@ app.get('/setup', requirePageAuth, (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'setup.html'));
 });
 
+app.get('/clients', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'clients.html')));
+app.get('/campaigns', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'campaigns.html')));
+app.get('/pipeline', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
+app.get('/billing', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'pricing.html')));
+app.get('/settings', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'settings.html')));
+app.get('/find-leads', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
+
 // Auth UI routes
 app.get('/login', (req, res) => {
     return res.sendFile(path.join(__dirname, 'public', 'login.html'));

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadGen Pro | Clients</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fas fa-rocket logo-icon"></i>
+                <span class="logo-text">LeadGen<span>Pro</span></span>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="/dashboard"><i class="fas fa-th-large"></i> Dashboard</a></li>
+                    <li class="active"><a href="/clients"><i class="fas fa-users"></i> Clients</a></li>
+                    <li><a href="/campaigns"><i class="fas fa-bullhorn"></i> Campaigns</a></li>
+                    <li><a href="/pipeline"><i class="fas fa-chart-line"></i> Pipeline</a></li>
+                    <li><a href="/billing"><i class="fas fa-credit-card"></i> Billing</a></li>
+                    <li id="nav-admin" style="display:none;"><a href="/admin.html" style="color: var(--gold);"><i class="fas fa-user-shield"></i> Admin</a></li>
+                    <li><a href="/settings"><i class="fas fa-cog"></i> Settings</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar" id="user-avatar">?</div>
+                    <div class="user-info">
+                        <span class="user-name" id="user-name">Loading...</span>
+                        <span class="user-role" id="user-email" style="font-size:0.7rem; opacity:0.6;"></span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+            </header>
+            <div class="content-body" style="display:flex; justify-content:center; align-items:center; height: 70vh;">
+                <div style="text-align: center;">
+                    <i class="fas fa-users" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                    <h1 class="page-title">Clients Module</h1>
+                    <p class="page-subtitle">Coming Soon</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
