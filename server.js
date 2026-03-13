@@ -84,7 +84,7 @@ app.get('/setup', requirePageAuth, (req, res) => {
 
 app.get('/clients', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'clients.html')));
 app.get('/campaigns', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'campaigns.html')));
-app.get('/pipeline', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
+app.get('/pipeline', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'pipeline.html')));
 app.get('/billing', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'pricing.html')));
 app.get('/settings', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'settings.html')));
 app.get('/find-leads', requirePageAuth, (req, res) => res.sendFile(path.join(__dirname, 'public', 'dashboard.html')));
@@ -700,6 +700,62 @@ app.post('/api/leads/status', requireAuth, (req, res) => {
         return res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update status' });
+    }
+});
+
+/**
+ * API: Get All Clients across all campaigns (USER-SCOPED)
+ */
+app.get('/api/all-clients', requireAuth, (req, res) => {
+    const uid = req.user.id;
+    const userDir = getUserDataDir(uid);
+    let allClients = [];
+
+    if (fs.existsSync(userDir)) {
+        const files = fs.readdirSync(userDir).filter(f => f.startsWith('leads_') || f.startsWith('enriched_'));
+        for (const file of files) {
+            try {
+                const leads = JSON.parse(fs.readFileSync(path.join(userDir, file), 'utf8'));
+                leads.forEach((l, i) => {
+                    const id = l.id || `lead-${i}`;
+                    allClients.push({
+                        ...l,
+                        id: id,
+                        file: file,
+                        status: l.status || 'New',
+                        notes: l.notes || ''
+                    });
+                });
+            } catch (e) {}
+        }
+    }
+    res.json({ clients: allClients });
+});
+
+/**
+ * API: Update Lead Arbitrary Fields (USER-SCOPED)
+ */
+app.post('/api/leads/update', requireAuth, (req, res) => {
+    const uid = req.user.id;
+    const { leadId, file, updates } = req.body;
+    const targetPath = getLeadsPath(uid, file);
+    if (!targetPath) return res.status(404).json({ error: 'No data file found' });
+
+    try {
+        const leads = JSON.parse(fs.readFileSync(targetPath, 'utf8'));
+        const updatedLeads = leads.map((l, i) => {
+            const currentId = l.id || `lead-${i}`;
+            const trackingId = l.id || encodeURIComponent(l.title || l.name || 'your business');
+            if (currentId === leadId || l.name === leadId || trackingId === leadId) {
+                return { ...l, ...updates };
+            }
+            return l;
+        });
+        fs.writeFileSync(targetPath, JSON.stringify(updatedLeads, null, 2));
+        invalidateUserCache(uid);
+        return res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update lead fields' });
     }
 });
 

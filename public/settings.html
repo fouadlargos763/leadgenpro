@@ -7,6 +7,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .settings-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+        .settings-card h3 { font-family: 'Outfit'; margin-top: 0; color: var(--text-main); font-size: 1.25rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase; }
+        .form-group input { width: 100%; max-width: 400px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none; }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -28,32 +35,67 @@
                 </ul>
             </nav>
             <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="avatar" id="user-avatar">?</div>
-                    <div class="user-info">
-                        <span class="user-name" id="user-name">Loading...</span>
-                        <span class="user-role" id="user-email" style="font-size:0.7rem; opacity:0.6;"></span>
-                    </div>
-                </div>
+                <button id="btn-logout" class="btn btn-sm btn-outline" style="width: 100%; border-color: rgba(255,255,255,0.1); color: var(--text-muted);"><i class="fas fa-sign-out-alt"></i> Logout</button>
             </div>
         </aside>
 
         <main class="main-content">
             <header class="top-header">
-                <div class="header-search">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
-                </div>
+                <h2>Account Settings</h2>
             </header>
-            <div class="content-body" style="display:flex; justify-content:center; align-items:center; height: 70vh;">
-                <div style="text-align: center;">
-                    <i class="fas fa-cog" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                    <h1 class="page-title">Account Settings</h1>
-                    <p class="page-subtitle">Coming Soon</p>
+            <div class="content-body" style="max-width: 800px;">
+                <div class="settings-card">
+                    <h3><i class="fas fa-user-circle" style="color: var(--primary); margin-right: 8px;"></i> Profile Information</h3>
+                    <div class="form-group">
+                        <label>Account Name</label>
+                        <input type="text" id="setting-name" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="setting-email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Member Since</label>
+                        <input type="text" id="setting-date" readonly style="color: var(--text-muted); border-style: dashed;">
+                    </div>
+                    <button class="btn btn-primary" onclick="alert('Profile details are synced via billing gateway.')">Edit Profile</button>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fas fa-envelope-open" style="color: var(--primary); margin-right: 8px;"></i> Outreach Email Configuration</h3>
+                    <div class="form-group">
+                        <label>SMTP Provider Status</label>
+                        <input type="text" value="System Managed (Active)" readonly style="border-color: var(--success); color: var(--success); background: rgba(16, 185, 129, 0.05);">
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5;">LeadGenPro currently manages and warms up IP reputation for all outbound pipelines. Custom SMTP configurations will be unlocked for Agency-tier users in the next major patch.</p>
+                </div>
+
+                <div class="settings-card" style="border-color: rgba(239, 68, 68, 0.3);">
+                    <h3 style="color: var(--danger);"><i class="fas fa-exclamation-triangle" style="margin-right: 8px;"></i> Danger Zone</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">Permanently delete your account and all associated pipeline data. This action cannot be undone.</p>
+                    <button class="btn btn-danger" style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger);" onclick="if(confirm('Are you absolutely sure you want to delete your account? All leads will be lost.')) alert('Please contact support@leadgenpro.com to fulfill this CCPA / GDPR request.');">Delete Account</button>
                 </div>
             </div>
         </main>
     </div>
+
     <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('lgp_user');
+            if(userStr) {
+                try {
+                    const profile = JSON.parse(userStr);
+                    if(document.getElementById('setting-name')) {
+                        document.getElementById('setting-name').value = profile.name;
+                        document.getElementById('setting-email').value = profile.email;
+                        if(profile.created_at) {
+                            document.getElementById('setting-date').value = new Date(profile.created_at).toLocaleDateString();
+                        }
+                    }
+                } catch(e) {}
+            }
+        });
+    </script>
 </body>
 </html>

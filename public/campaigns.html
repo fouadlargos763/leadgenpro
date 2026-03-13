@@ -40,20 +40,149 @@
 
         <main class="main-content">
             <header class="top-header">
+                <h2 style="font-family:'Outfit'">Campaigns & Templates</h2>
                 <div class="header-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
+                    <input type="text" placeholder="Search campaigns...">
                 </div>
             </header>
-            <div class="content-body" style="display:flex; justify-content:center; align-items:center; height: 70vh;">
-                <div style="text-align: center;">
-                    <i class="fas fa-bullhorn" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                    <h1 class="page-title">Campaigns Hub</h1>
-                    <p class="page-subtitle">Under Construction</p>
+            
+            <div class="content-body">
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button class="btn btn-primary" onclick="openNewCampaignModal()"><i class="fas fa-plus"></i> Create New Campaign</button>
+                    <button class="btn btn-outline" onclick="openTemplateManager()"><i class="fas fa-envelope-open-text"></i> Email Templates</button>
                 </div>
+
+                <section class="leads-section">
+                    <div class="table-header">
+                        <h3>Active Campaigns</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="campaigns-table">
+                            <thead>
+                                <tr>
+                                    <th>Campaign Name</th>
+                                    <th>Target Leads</th>
+                                    <th>Emails Sent</th>
+                                    <th>Open Rate</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="campaigns-list">
+                                <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
+
+    <!-- Create Campaign Modal -->
+    <div id="new-campaign-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-bullhorn" style="color: var(--primary); margin-right: 8px;"></i> Create Campaign</h3>
+                <button class="close-modal" onclick="closeNewCampaignModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Campaign Name</label>
+                    <input type="text" id="camp-name" placeholder="e.g. Austin Realtors Q4" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main);">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Target Client Source</label>
+                    <select id="camp-source" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main);">
+                        <option value="new">Generate New Leads (Maps Scrape)</option>
+                        <option value="all">All Existing Sandbox Clients</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Attach Template</label>
+                    <select id="camp-template" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main);">
+                        <option value="auto">Auto-Select (Smart Website Fallback)</option>
+                        <option value="nosite">Missing Website Pitch</option>
+                        <option value="hasite">Performance Upgrade Pitch</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 1rem;">
+                <button class="btn btn-secondary" onclick="closeNewCampaignModal()" type="button">Cancel</button>
+                <button class="btn btn-primary" onclick="launchNewCampaign()" type="button"><i class="fas fa-rocket"></i> Launch Pipeline</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Template Manager Modal -->
+    <div id="template-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-envelope-open-text" style="color: var(--primary); margin-right: 8px;"></i> Email Templates Engine</h3>
+                <button class="close-modal" onclick="closeTemplateManager()">&times;</button>
+            </div>
+            <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <label style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Template Subject</label>
+                    <input type="text" value="Improving {{businessName}}'s booking conversion rates" style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius:8px; color: white;" readonly>
+                </div>
+                <div>
+                    <label style="color:var(--text-muted); font-size:0.8rem; text-transform:uppercase;">Template Body (Variables Supported)</label>
+                    <textarea rows="6" style="width: 100%; padding: 0.8rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); border-radius:8px; color: white; line-height: 1.5;" readonly>Hi {{businessName}} team,&#10;&#10;I was recently looking at your website at {{website}} and really liked the work you're showcasing...&#10;&#10;As a specialist in high-performance web design for local businesses, I notice many sites in our industry look great but could be converted into even more of a lead-generation machine...&#10;&#10;Would you be open to a quick 10-minute chat this week?</textarea>
+                </div>
+                <div style="font-size: 0.8rem; color: var(--gold);">
+                    <i class="fas fa-info-circle"></i> AI Personalization hook {{aiHook}} is automatically injected based on plan limits.
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between;">
+                <button class="btn btn-outline" type="button"><i class="fas fa-eye"></i> Preview Rendering</button>
+                <button class="btn btn-primary" onclick="closeTemplateManager()" type="button">Save Template</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Find Leads Modal (Re-used) -->
+    <div id="find-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-search-location" style="color: var(--primary); margin-right: 8px;"></i> Find New Leads</h3>
+                <button class="close-modal" onclick="document.getElementById('find-modal').style.display='none'">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Category (Required)</label>
+                    <input type="text" id="find-category" placeholder="e.g. Dentist, Plumber, Marketing" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Location (Required)</label>
+                    <input type="text" id="find-location" placeholder="e.g. Austin, TX" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Lead Limit (Optional)</label>
+                    <input type="number" id="find-limit" placeholder="50" min="1" max="100" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
+                <button class="btn btn-secondary close-modal" onclick="document.getElementById('find-modal').style.display='none'" type="button">Cancel</button>
+                <button class="btn btn-primary" id="btn-execute-find" type="button"><i class="fas fa-bolt"></i> Start Search</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Console Modal -->
+    <div id="console-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-terminal"></i> System Terminal</h3>
+                <button class="close-modal" onclick="document.getElementById('console-modal').style.display='none'">&times;</button>
+            </div>
+            <div class="modal-body" style="background: #000; padding: 0;">
+                <pre id="console-output" style="color: #0f0; margin: 0; padding: 1.5rem; height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;"></pre>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
+    <script src="campaigns.js"></script>
 </body>
 </html>

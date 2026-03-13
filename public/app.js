@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    async function triggerAction(action, params = {}) {
+    window.triggerAction = async function triggerAction(action, params = {}) {
         modal.style.display = 'flex';
         consoleOutput.innerHTML = `[System] Initiating ${action.toUpperCase()} process...\n`;
 

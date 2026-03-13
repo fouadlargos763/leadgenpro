@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LeadGen Pro | Clients</title>
+    <title>LeadGen Pro | Clients Setup</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .client-notes { max-width: 15rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .editable { cursor: pointer; border-bottom: 1px dashed var(--text-muted); padding-bottom: 2px; }
+        .editable:hover { color: var(--gold); border-bottom-color: var(--gold); }
+    </style>
 </head>
 <body>
     <div class="dashboard-container">
@@ -42,18 +47,74 @@
             <header class="top-header">
                 <div class="header-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search...">
+                    <input type="text" id="clients-search" placeholder="Search clients..." oninput="filterClients(this.value)">
                 </div>
             </header>
-            <div class="content-body" style="display:flex; justify-content:center; align-items:center; height: 70vh;">
-                <div style="text-align: center;">
-                    <i class="fas fa-users" style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                    <h1 class="page-title">Clients Module</h1>
-                    <p class="page-subtitle">Coming Soon</p>
-                </div>
+            <div class="content-body">
+                <section class="leads-section">
+                    <div class="table-header">
+                        <h3>All Clients / Contacts</h3>
+                        <div class="table-filters">
+                            <button class="btn btn-outline" onclick="loadClients()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="clients-table">
+                            <thead>
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Website</th>
+                                    <th>Status</th>
+                                    <th>Notes</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-list">
+                                <!-- Loaded dynamically -->
+                                <tr><td colspan="7" style="text-align: center;">Loading clients...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </main>
     </div>
+
+    <!-- Client Edit Modal -->
+    <div id="client-edit-modal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit" style="color: var(--primary); margin-right: 8px;"></i> Edit Client</h3>
+                <button class="close-modal" onclick="closeClientModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-client-id">
+                <input type="hidden" id="edit-client-file">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Status</label>
+                    <select id="edit-client-status" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;">
+                        <option value="New">New</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="Replied">Replied</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.85rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; text-transform: uppercase;">Notes</label>
+                    <textarea id="edit-client-notes" placeholder="Add meeting notes, next steps..." rows="4" style="width: 100%; padding: 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass); border-radius: 8px; color: var(--text-main); outline: none;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
+                <button class="btn btn-secondary close-modal" onclick="closeClientModal()" type="button">Cancel</button>
+                <button class="btn btn-primary" onclick="saveClientEdit()" type="button"><i class="fas fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+
     <script src="app.js"></script>
+    <script src="clients.js"></script>
 </body>
 </html>
