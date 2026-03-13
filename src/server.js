@@ -1438,6 +1438,6 @@ app.get('/api/leads/export', requireAuth, (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
     startBackupScheduler();
 });
