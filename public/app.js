@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // ── END AUTH ────────────────────────────────────────────────
 
-    // DOM Elements
+    // DOM Elements - Using null-safe variables
     const leadsList = document.getElementById('leads-list');
     const refreshBtn = document.getElementById('btn-refresh');
     const actionButtons = document.querySelectorAll('.action-btn');
@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeModal = document.querySelectorAll('.close-modal');
     const consoleOutput = document.getElementById('console-output');
     const campaignsList = document.getElementById('campaigns-list');
+    
     const statsElements = {
         total: document.getElementById('stat-total-leads'),
         withEmails: document.getElementById('stat-leads-with-emails'),
@@ -78,11 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const campaignSelector = document.getElementById('campaign-selector');
     let currentCampaignFile = '';
 
-    // Initial Load
-    initDashboard();
+    // Initial Load - Only if leadsList exists (indicating we are on the dashboard)
+    if (leadsList) {
+        initDashboard();
+    }
 
-    // Event Listeners
-    refreshBtn.addEventListener('click', loadLeads);
+    // Event Listeners - Defensive attachments
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', loadLeads);
+    }
 
     if (campaignSelector) {
         campaignSelector.addEventListener('change', () => {
@@ -91,46 +96,50 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    actionButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const action = btn.getAttribute('data-action');
-            if (action === 'find') {
-                const fmodal = document.getElementById('find-modal');
-                if (fmodal) fmodal.style.display = 'flex';
-                return;
-            }
-            triggerAction(action, { campaignFile: currentCampaignFile });
+    if (actionButtons.length > 0) {
+        actionButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.getAttribute('data-action');
+                if (action === 'find') {
+                    const fmodal = document.getElementById('find-modal');
+                    if (fmodal) fmodal.style.display = 'flex';
+                    return;
+                }
+                triggerAction(action, { campaignFile: currentCampaignFile });
+            });
         });
-    });
+    }
 
-    closeModal.forEach(btn => {
-        btn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            if (previewModal) previewModal.style.display = 'none';
-            if (timelineModal) timelineModal.style.display = 'none';
-            if (analysisModal) analysisModal.style.display = 'none';
-            const fmodal = document.getElementById('find-modal');
-            if (fmodal) fmodal.style.display = 'none';
+    if (closeModal.length > 0) {
+        closeModal.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (modal) modal.style.display = 'none';
+                if (previewModal) previewModal.style.display = 'none';
+                if (timelineModal) timelineModal.style.display = 'none';
+                if (analysisModal) analysisModal.style.display = 'none';
+                const fmodal = document.getElementById('find-modal');
+                if (fmodal) fmodal.style.display = 'none';
+            });
         });
-    });
+    }
 
     window.onclick = (event) => {
-        if (event.target == modal) modal.style.display = 'none';
-        if (event.target == previewModal) previewModal.style.display = 'none';
-        if (event.target == timelineModal) timelineModal.style.display = 'none';
-        if (event.target == analysisModal) analysisModal.style.display = 'none';
+        if (modal && event.target == modal) modal.style.display = 'none';
+        if (previewModal && event.target == previewModal) previewModal.style.display = 'none';
+        if (timelineModal && event.target == timelineModal) timelineModal.style.display = 'none';
+        if (analysisModal && event.target == analysisModal) analysisModal.style.display = 'none';
         const fmodal = document.getElementById('find-modal');
-        if (event.target == fmodal) fmodal.style.display = 'none';
+        if (fmodal && event.target == fmodal) fmodal.style.display = 'none';
     };
 
     const findBtn = document.getElementById('btn-execute-find');
     if (findBtn) {
         findBtn.addEventListener('click', () => {
             const fmodal = document.getElementById('find-modal');
-            const industry = document.getElementById('find-industry').value.trim();
-            const city = document.getElementById('find-city').value.trim();
-            const country = document.getElementById('find-country').value.trim();
-            const maxLeads = document.getElementById('find-limit').value || 50;
+            const industry = document.getElementById('find-industry')?.value.trim();
+            const city = document.getElementById('find-city')?.value.trim();
+            const country = document.getElementById('find-country')?.value.trim();
+            const maxLeads = document.getElementById('find-limit')?.value || 50;
 
             if (!industry || (!city && !country)) {
                 alert('Industry and at least one Location (City/Country) are required!');
@@ -166,18 +175,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     `).join('');
                 }
 
-                // Populate Dropdown selector
-                campaignSelector.innerHTML = data.campaigns.map(camp => {
-                    return `<option style="color:#000;" value="${camp.file}">${camp.name}</option>`;
-                }).join('');
+                // DASHBOARD DROPDOWN
+                if (campaignSelector) {
+                    campaignSelector.innerHTML = data.campaigns.map(camp => {
+                        return `<option style="color:#000;" value="${camp.file}">${camp.name}</option>`;
+                    }).join('');
+                }
                 currentCampaignFile = data.campaigns[0].file; // Set default
             } else {
-                campaignSelector.innerHTML = '<option style="color:#000;" value="">No campaigns found...</option>';
+                if (campaignSelector) campaignSelector.innerHTML = '<option style="color:#000;" value="">No campaigns found...</option>';
                 if (campaignsList) campaignsList.innerHTML = '<tr><td colspan="5" style="text-align:center;">No campaigns found.</td></tr>';
                 
                 // SHOW ONBOARDING IF NO CAMPAIGNS & NOT DISMISSED
-                if (!localStorage.getItem('lgp_onboarded')) {
-                    document.getElementById('onboarding-modal').style.display = 'flex';
+                const onboardModal = document.getElementById('onboarding-modal');
+                if (onboardModal && !localStorage.getItem('lgp_onboarded')) {
+                    onboardModal.style.display = 'flex';
                 }
             }
         } catch (error) {
@@ -267,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 10000);
 
     async function loadLeads() {
+        if (!leadsList) return; // Silent return if not on dashboard
         try {
             leadsList.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 3rem; color: var(--text-muted);">Loading leads from data storage...</td></tr>';
 
@@ -279,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateStats(data.stats);
         } catch (error) {
             console.error('Failed to load leads:', error);
-            leadsList.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 3rem; color: var(--danger);">Error loading data. Make sure the server is running.</td></tr>';
+            if (leadsList) leadsList.innerHTML = '<tr><td colspan="12" style="text-align: center; padding: 3rem; color: var(--danger);">Error loading data. Make sure the server is running.</td></tr>';
         }
     }
 
@@ -473,10 +486,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function updateStats(stats) {
-        statsElements.total.textContent = stats.total || 0;
-        statsElements.withEmails.textContent = stats.withEmails || 0;
-        statsElements.sent.textContent = stats.sent || 0;
-        statsElements.qualified.textContent = stats.qualified || 0;
+        if (!stats) return;
+        if (statsElements.total) statsElements.total.textContent = stats.total || 0;
+        if (statsElements.withEmails) statsElements.withEmails.textContent = stats.withEmails || 0;
+        if (statsElements.sent) statsElements.sent.textContent = stats.sent || 0;
+        if (statsElements.qualified) statsElements.qualified.textContent = stats.qualified || 0;
     }
 
     // ── AI INTELLIGENCE PANEL ──
@@ -489,32 +503,37 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!lead) return;
         currentAILead = lead;
 
-        // Set name
-        document.getElementById('ai-lead-name').textContent = lead.name || lead.title || 'Unknown Lead';
-        document.getElementById('ai-score-num').textContent = lead.score || 0;
-        document.getElementById('ai-insight-text').textContent = '⏳ Generating AI insight...';
-        document.getElementById('ai-score-reasons').innerHTML = '';
+        const nameEl = document.getElementById('ai-lead-name');
+        const scoreEl = document.getElementById('ai-score-num');
+        const insightEl = document.getElementById('ai-insight-text');
+        const reasonsEl = document.getElementById('ai-score-reasons');
+        const badgeEl = document.getElementById('ai-tier-badge');
+
+        if (nameEl) nameEl.textContent = lead.name || lead.title || 'Unknown Lead';
+        if (scoreEl) scoreEl.textContent = lead.score || 0;
+        if (insightEl) insightEl.textContent = '⏳ Generating AI insight...';
+        if (reasonsEl) reasonsEl.innerHTML = '';
 
         // Tier badge
         const tier = lead.scoreTier || 'Cold';
         const tierColors = { Hot: '#ff4757', Warm: '#ffa502', Cold: '#a4b0be' };
-        const badge = document.getElementById('ai-tier-badge');
-        badge.textContent = `🔥 ${tier}`;
-        badge.style.background = `${tierColors[tier]}22`;
-        badge.style.border = `1px solid ${tierColors[tier]}55`;
-        badge.style.color = tierColors[tier];
+        if (badgeEl) {
+            badgeEl.textContent = `🔥 ${tier}`;
+            badgeEl.style.background = `${tierColors[tier]}22`;
+            badgeEl.style.border = `1px solid ${tierColors[tier]}55`;
+            badgeEl.style.color = tierColors[tier];
+        }
 
-        // Score reasons from cached data
-        if (lead.scoreReasons && lead.scoreReasons.length) {
-            document.getElementById('ai-score-reasons').innerHTML = lead.scoreReasons
+        // Score reasons
+        if (reasonsEl && lead.scoreReasons && lead.scoreReasons.length) {
+            reasonsEl.innerHTML = lead.scoreReasons
                 .map(r => `<li style="padding: 6px 10px; background: rgba(255,255,255,0.03); border-radius: 6px;">${r}</li>`)
                 .join('');
         }
 
-        // Show modal
-        aiModal.style.display = 'flex';
+        if (aiModal) aiModal.style.display = 'flex';
 
-        // Fetch AI insight from server
+        // Fetch AI insight
         try {
             const res = await fetch('/api/ai-insights', {
                 method: 'POST',
@@ -522,23 +541,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({ lead })
             });
             const data = await res.json();
-            document.getElementById('ai-insight-text').textContent = data.insight || 'No insight available.';
+            if (insightEl) insightEl.textContent = data.insight || 'No insight available.';
         } catch (err) {
-            document.getElementById('ai-insight-text').textContent = 'AI insight unavailable.';
+            if (insightEl) insightEl.textContent = 'AI insight unavailable.';
         }
     };
 
-    // Wire up the "Optimize Email" button inside AI modal
     const btnOptimize = document.getElementById('btn-ai-optimize-email');
     if (btnOptimize) {
         btnOptimize.addEventListener('click', async () => {
             if (!currentAILead) return;
-            aiModal.style.display = 'none';
-            emailOptimizerModal.style.display = 'flex';
-            document.getElementById('optimizer-suggestions').innerHTML = '<li>⏳ Analyzing email...</li>';
-            document.getElementById('orig-subject').textContent = '...';
-            document.getElementById('new-subject').textContent = '...';
-            document.getElementById('new-body').textContent = '...';
+            if (aiModal) aiModal.style.display = 'none';
+            if (emailOptimizerModal) emailOptimizerModal.style.display = 'flex';
+            
+            const suggsEl = document.getElementById('optimizer-suggestions');
+            const origSubEl = document.getElementById('orig-subject');
+            const newSubEl = document.getElementById('new-subject');
+            const newBodyEl = document.getElementById('new-body');
+
+            if (suggsEl) suggsEl.innerHTML = '<li>⏳ Analyzing email...</li>';
+            if (origSubEl) origSubEl.textContent = '...';
+            if (newSubEl) newSubEl.textContent = '...';
+            if (newBodyEl) newBodyEl.textContent = '...';
 
             // First fetch the preview email, then optimize it
             try {
@@ -556,21 +580,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const opt = await optRes.json();
 
-                document.getElementById('optimizer-suggestions').innerHTML = opt.suggestions
-                    .map(s => `<li style="padding: 6px 10px; background: rgba(255,165,0,0.06); border-radius: 6px; border-left: 3px solid var(--gold);">${s}</li>`)
-                    .join('');
-                document.getElementById('orig-subject').textContent = emailDraft.subject || '—';
-                document.getElementById('new-subject').textContent = opt.improvedSubject || emailDraft.subject;
-                document.getElementById('new-body').textContent = opt.improvedBody || emailDraft.body || '—';
+                if (suggsEl) {
+                    suggsEl.innerHTML = (opt.suggestions || [])
+                        .map(s => `<li style="padding: 6px 10px; background: rgba(255,165,0,0.06); border-radius: 6px; border-left: 3px solid var(--gold);">${s}</li>`)
+                        .join('');
+                }
+                if (origSubEl) origSubEl.textContent = emailDraft.subject || '—';
+                if (newSubEl) newSubEl.textContent = opt.improvedSubject || emailDraft.subject;
+                if (newBodyEl) newBodyEl.textContent = opt.improvedBody || emailDraft.body || '—';
             } catch (err) {
-                document.getElementById('optimizer-suggestions').innerHTML = `<li style="color: var(--danger);">Error: ${err.message}</li>`;
+                if (suggsEl) suggsEl.innerHTML = `<li style="color: var(--danger);">Error: ${err.message}</li>`;
             }
         });
     }
 
     window.triggerAction = async function triggerAction(action, params = {}) {
-        modal.style.display = 'flex';
-        consoleOutput.innerHTML = `[System] Initiating ${action.toUpperCase()} process...\n`;
+        if (modal) modal.style.display = 'flex';
+        if (consoleOutput) consoleOutput.innerHTML = `[System] Initiating ${action.toUpperCase()} process...\n`;
 
         const token = localStorage.getItem('lgp_token');
 
@@ -597,14 +623,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (done) break;
 
                 const text = decoder.decode(value);
-                consoleOutput.innerHTML += text;
-                consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                if (consoleOutput) {
+                    consoleOutput.innerHTML += text;
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                }
             }
 
-            consoleOutput.innerHTML += `\n[System] Action ${action} completed successfully.`;
+            if (consoleOutput) consoleOutput.innerHTML += `\n[System] Action ${action} completed successfully.`;
             loadLeads(); // Refresh table after action
         } catch (error) {
-            consoleOutput.innerHTML += `\n[Error] ${error.message}`;
+            if (consoleOutput) consoleOutput.innerHTML += `\n[Error] ${error.message}`;
         }
     }
 
@@ -655,15 +683,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!lead) return;
         window.currentPreviewLead = lead; // store for send button
 
+        const subEl = document.getElementById('preview-subject');
+        const bodyEl = document.getElementById('preview-body');
+
         try {
-            document.getElementById('preview-subject').textContent = `Loading preview...`;
-            document.getElementById('preview-body').innerHTML = `Please wait...`;
-            document.getElementById('preview-modal').style.display = 'flex';
+            if (subEl) subEl.textContent = `Loading preview...`;
+            if (bodyEl) bodyEl.innerHTML = `Please wait...`;
+            if (previewModal) previewModal.style.display = 'flex';
             
             // Reset edit state
-            const bodyEl = document.getElementById('preview-body');
-            bodyEl.contentEditable = false;
-            bodyEl.style.background = 'white';
+            if (bodyEl) {
+                bodyEl.contentEditable = false;
+                bodyEl.style.background = 'white';
+            }
 
             const response = await fetch('/api/preview', {
                 method: 'POST',
@@ -672,11 +704,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await response.json();
 
-            document.getElementById('preview-subject').textContent = data.subject;
-            document.getElementById('preview-body').innerHTML = data.html; // Use HTML output to render links/pixels
+            if (subEl) subEl.textContent = data.subject || 'No Subject';
+            if (bodyEl) bodyEl.innerHTML = data.html || 'No Content'; 
         } catch (error) {
             console.error('Failed to load preview:', error);
-            document.getElementById('preview-body').innerHTML = `<span style="color:red">Failed to generate preview.</span>`;
+            if (bodyEl) bodyEl.innerHTML = `<span style="color:red">Failed to generate preview.</span>`;
         }
     };
 
@@ -734,12 +766,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const container = document.getElementById('timeline-container');
-            container.innerHTML = '<div style="color: var(--text-muted);">Loading events...</div>';
-            timelineModal.style.display = 'flex';
+            if (container) container.innerHTML = '<div style="color: var(--text-muted);">Loading events...</div>';
+            if (timelineModal) timelineModal.style.display = 'flex';
 
             const leadId = lead.id || encodeURIComponent(lead.title || lead.name || 'your business');
             const response = await fetch(`/api/lead/${leadId}/activity`);
             const data = await response.json();
+
+            if (!container) return;
 
             if (!data.activities || data.activities.length === 0) {
                 container.innerHTML = '<div style="color: var(--text-muted); padding: 1rem 0;">No activity tracked yet.</div>';
@@ -784,7 +818,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Failed to load timeline:', error);
-            document.getElementById('timeline-container').innerHTML = '<div style="color:red">Failed to load activity history.</div>';
+            const container = document.getElementById('timeline-container');
+            if (container) container.innerHTML = '<div style="color:red">Failed to load activity history.</div>';
         }
     };
 
@@ -794,15 +829,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const container = document.getElementById('analysis-container');
         const modal = document.getElementById('analysis-modal');
-        modal.style.display = 'flex';
+        if (modal) modal.style.display = 'flex';
 
         // Wire re-analyze button
         const reBtn = document.getElementById('btn-run-analysis');
-        reBtn.onclick = async () => {
-            lead.websiteAnalysis = null; // Clear cache to re-fetch
-            container.innerHTML = '<div style="color:var(--text-muted)">Re-analyzing...</div>';
-            await doAnalysis();
-        };
+        if (reBtn) {
+            reBtn.onclick = async () => {
+                lead.websiteAnalysis = null; // Clear cache to re-fetch
+                if (container) container.innerHTML = '<div style="color:var(--text-muted)">Re-analyzing...</div>';
+                await doAnalysis();
+            };
+        }
 
         async function doAnalysis() {
             // Use cached data if available
@@ -811,10 +848,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             if (!lead.website) {
-                container.innerHTML = '<div style="color:var(--danger)">No website URL available for this lead.</div>';
+                if (container) container.innerHTML = '<div style="color:var(--danger)">No website URL available for this lead.</div>';
                 return;
             }
-            container.innerHTML = '<div style="color:var(--text-muted)">🔍 Analyzing website, please wait...</div>';
+            if (container) container.innerHTML = '<div style="color:var(--text-muted)">🔍 Analyzing website, please wait...</div>';
             try {
                 const res = await fetch('/api/analyze', {
                     method: 'POST',
@@ -826,11 +863,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.currentLeads[index].websiteAnalysis = data;
                 renderAnalysis(data);
             } catch (err) {
-                container.innerHTML = `<div style="color:var(--danger)">Error: ${err.message}</div>`;
+                if (container) container.innerHTML = `<div style="color:var(--danger)">Error: ${err.message}</div>`;
             }
         }
 
         function renderAnalysis(a) {
+            if (!container) return;
             if (a.status === 'error') {
                 container.innerHTML = `<div style="color:var(--danger)">⚠️ ${a.error || 'Could not analyze website'}</div>`;
                 return;
