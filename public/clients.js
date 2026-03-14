@@ -1,6 +1,7 @@
 // ── Clients Page Script ──────────────────────────────────────────────────────
 // Handles: Load, Render, Filter, Add, Edit, Refresh
 
+// Clients UI Actions Implementation - Trigger Deploy
 let rawClients = [];
 
 // ── Auth helper (token from localStorage, set by app.js) ────────────────────
