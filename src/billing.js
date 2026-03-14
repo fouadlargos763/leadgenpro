@@ -117,8 +117,11 @@ function enforcePlanLimits(req, res, next) {
 // ─── Stripe Setup ─────────────────────────────────────────────────────────────
 let stripe = null;
 const stripeKey = process.env.STRIPE_SECRET_KEY;
-if (stripeKey && stripeKey !== 'your_stripe_secret_key_here') {
+if (stripeKey && stripeKey !== 'your_stripe_secret_key_here' && stripeKey.startsWith('sk_')) {
     stripe = require('stripe')(stripeKey);
+    console.log('[Billing] Stripe SDK initialized successfully.');
+} else {
+    console.warn('[Billing Warning] STRIPE_SECRET_KEY is missing or invalid. Billing features will be disabled.');
 }
 
 /**

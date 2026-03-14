@@ -49,14 +49,14 @@
                 <h2 style="font-family:'Outfit'">Campaigns & Templates</h2>
                 <div class="header-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search campaigns...">
+                    <input type="text" id="campaigns-search" placeholder="Search campaigns...">
                 </div>
             </header>
             
             <div class="content-body">
                 <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
-                    <button class="btn btn-primary" onclick="openNewCampaignModal()"><i class="fas fa-plus"></i> Create New Campaign</button>
-                    <button class="btn btn-outline" onclick="openTemplateManager()"><i class="fas fa-envelope-open-text"></i> Email Templates</button>
+                    <button class="btn btn-primary" id="btn-open-new-campaign"><i class="fas fa-plus"></i> Create New Campaign</button>
+                    <button class="btn btn-outline" id="btn-open-template-manager"><i class="fas fa-envelope-open-text"></i> Email Templates</button>
                 </div>
 
                 <section class="leads-section">
@@ -90,7 +90,7 @@
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h3><i class="fas fa-bullhorn" style="color: var(--primary); margin-right: 8px;"></i> Create Campaign</h3>
-                <button class="close-modal" onclick="closeNewCampaignModal()">&times;</button>
+                <button class="close-modal" id="btn-close-new-campaign">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="margin-bottom: 1.5rem;">
@@ -114,8 +114,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; gap: 1rem;">
-                <button class="btn btn-secondary" onclick="closeNewCampaignModal()" type="button">Cancel</button>
-                <button class="btn btn-primary" onclick="launchNewCampaign()" type="button"><i class="fas fa-rocket"></i> Launch Pipeline</button>
+                <button class="btn btn-secondary" id="btn-cancel-new-campaign" type="button">Cancel</button>
+                <button class="btn btn-primary" id="btn-launch-new-campaign" type="button"><i class="fas fa-rocket"></i> Launch Pipeline</button>
             </div>
         </div>
     </div>
@@ -125,7 +125,7 @@
         <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
                 <h3><i class="fas fa-envelope-open-text" style="color: var(--primary); margin-right: 8px;"></i> Email Templates Engine</h3>
-                <button class="close-modal" onclick="closeTemplateManager()">&times;</button>
+                <button class="close-modal" id="btn-close-template-manager">&times;</button>
             </div>
             <div class="modal-body" style="display: flex; flex-direction: column; gap: 1rem;">
                 <div>
@@ -141,8 +141,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; justify-content: space-between;">
-                <button class="btn btn-outline" type="button"><i class="fas fa-eye"></i> Preview Rendering</button>
-                <button class="btn btn-primary" onclick="closeTemplateManager()" type="button">Save Template</button>
+                <button class="btn btn-outline" type="button" id="btn-preview-rendering"><i class="fas fa-eye"></i> Preview Rendering</button>
+                <button class="btn btn-primary" id="btn-save-template" type="button">Save Template</button>
             </div>
         </div>
     </div>
@@ -152,7 +152,7 @@
         <div class="modal-content" style="max-width: 500px;">
             <div class="modal-header">
                 <h3><i class="fas fa-search-location" style="color: var(--primary); margin-right: 8px;"></i> Find New Leads</h3>
-                <button class="close-modal" onclick="document.getElementById('find-modal').style.display='none'">&times;</button>
+                <button class="close-modal" id="btn-close-find-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div style="margin-bottom: 1.25rem;">
@@ -175,7 +175,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; gap: 1rem; align-items: center;">
-                <button class="btn btn-secondary close-modal" onclick="document.getElementById('find-modal').style.display='none'" type="button">Cancel</button>
+                <button class="btn btn-secondary" id="btn-cancel-find-modal" type="button">Cancel</button>
                 <button class="btn btn-primary" id="btn-execute-find" type="button"><i class="fas fa-bolt"></i> Start Search</button>
             </div>
         </div>
@@ -186,10 +186,13 @@
         <div class="modal-content" style="max-width: 800px;">
             <div class="modal-header">
                 <h3><i class="fas fa-terminal"></i> System Terminal</h3>
-                <button class="close-modal" onclick="document.getElementById('console-modal').style.display='none'">&times;</button>
+                <button class="close-modal" id="btn-close-console-modal">&times;</button>
             </div>
             <div class="modal-body" style="background: #000; padding: 0;">
                 <pre id="console-output" style="color: #0f0; margin: 0; padding: 1.5rem; height: 400px; overflow-y: auto; font-family: monospace; font-size: 0.85rem;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="btn-hide-console-modal">Close</button>
             </div>
         </div>
     </div>

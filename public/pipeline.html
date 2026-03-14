@@ -8,21 +8,17 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .kanban-board { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 2rem; height: calc(100vh - 120px); align-items: stretch; }
-        .kanban-column { background: rgba(0,0,0,0.15); border: 1px solid var(--border-glass); border-radius: 12px; min-width: 300px; max-width: 320px; display: flex; flex-direction: column; }
-        .kanban-header { font-weight: 600; text-transform: uppercase; font-size: 0.85rem; padding: 1rem; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); }
-        .kanban-body { flex: 1; padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; }
-        .kanban-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 8px; padding: 1rem; cursor: grab; transition: border-color 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .kanban-card:active { cursor: grabbing; border-color: var(--cyan); }
-        .kanban-card h4 { margin: 0 0 0.5rem 0; font-size: 1rem; color: var(--gold); }
-        .kanban-card p { margin: 0; font-size: 0.8rem; color: var(--text-main); opacity: 0.8; }
-        .kanban-card .contact { margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted); display:flex; flex-direction:column; gap:0.25rem; }
-        .col-new .kanban-header { border-top: 3px solid var(--primary); }
-        .col-contacted .kanban-header { border-top: 3px solid #f59e0b; }
-        .col-replied .kanban-header { border-top: 3px solid var(--cyan); }
-        .col-qualified .kanban-header { border-top: 3px solid var(--success); }
-        .col-closed .kanban-header { border-top: 3px solid var(--danger); }
-        .badge-count { background: rgba(255,255,255,0.1); padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; }
+        .kanban-board { display: flex; gap: 1rem; padding: 1rem; overflow-x: auto; min-height: 80vh; }
+        .kanban-column { min-width: 300px; flex: 1; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--border-glass); display: flex; flex-direction: column; }
+        .kanban-header { padding: 1.25rem; border-bottom: 1px solid var(--border-glass); display: flex; justify-content: space-between; align-items: center; }
+        .kanban-header h3 { font-family: 'Outfit'; font-size: 1rem; margin: 0; }
+        .kanban-header .count { background: var(--border-glass); padding: 2px 8px; border-radius: 50px; font-size: 0.75rem; }
+        .kanban-body { padding: 1rem; flex: 1; min-height: 200px; }
+        .kanban-card { background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 10px; padding: 1rem; margin-bottom: 0.75rem; cursor: grab; transition: transform 0.2s, box-shadow 0.2s; }
+        .kanban-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .kanban-card h4 { margin: 0 0 0.5rem 0; font-size: 0.95rem; font-family: 'Inter'; font-weight: 600; color: var(--text-main); }
+        .kanban-card p { margin: 0; font-size: 0.8rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+        .kanban-card .contact { margin-top: 0.75rem; display: flex; gap: 10px; font-size: 0.75rem; color: var(--gold); }
     </style>
 </head>
 <body>
@@ -53,8 +49,7 @@
                     </div>
                 </div>
                 <div style="margin-top:0.75rem; padding: 0 0.5rem;">
-                    <button id="btn-logout"
-                        style="width:100%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; padding:0.5rem; border-radius:8px; font-size:0.8rem; cursor:pointer; transition:background 0.2s;">
+                    <button id="btn-logout" style="width:100%; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.25); color:#fca5a5; padding:0.5rem; border-radius:8px; font-size:0.8rem; cursor:pointer;">
                         <i class="fas fa-sign-out-alt" style="margin-right:5px;"></i> Sign Out
                     </button>
                 </div>
@@ -62,34 +57,59 @@
         </aside>
 
         <main class="main-content">
-            <header class="top-header" style="justify-content: space-between;">
-                <h2>Sales Pipeline</h2>
+            <header class="top-header">
+                <h2 style="font-family:'Outfit'">Visual Sales Pipeline</h2>
                 <div class="header-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="pipeline-search" placeholder="Search board..." oninput="renderPipeline()">
+                    <input type="text" id="pipeline-search" placeholder="Search clients in pipeline...">
                 </div>
             </header>
-            <div class="content-body">
+            
+            <div class="content-body" style="padding: 0;">
                 <div class="kanban-board">
-                    <div class="kanban-column col-new">
-                        <div class="kanban-header">New Lead <span id="count-new" class="badge-count">0</span></div>
-                        <div class="kanban-body dropzone" ondragover="allowDrop(event)" ondrop="drop(event, 'New')"></div>
+                    <!-- New -->
+                    <div class="kanban-column col-new" data-status="New">
+                        <div class="kanban-header">
+                            <h3><i class="fas fa-plus-circle" style="color:var(--primary)"></i> New</h3>
+                            <span class="count" id="count-new">0</span>
+                        </div>
+                        <div class="kanban-body"></div>
                     </div>
-                    <div class="kanban-column col-contacted">
-                        <div class="kanban-header">Contacted <span id="count-contacted" class="badge-count">0</span></div>
-                        <div class="kanban-body dropzone" ondragover="allowDrop(event)" ondrop="drop(event, 'Contacted')"></div>
+
+                    <!-- Contacted -->
+                    <div class="kanban-column col-contacted" data-status="Contacted">
+                        <div class="kanban-header">
+                            <h3><i class="fas fa-paper-plane" style="color:var(--gold)"></i> Contacted</h3>
+                            <span class="count" id="count-contacted">0</span>
+                        </div>
+                        <div class="kanban-body"></div>
                     </div>
-                    <div class="kanban-column col-replied">
-                        <div class="kanban-header">Replied <span id="count-replied" class="badge-count">0</span></div>
-                        <div class="kanban-body dropzone" ondragover="allowDrop(event)" ondrop="drop(event, 'Replied')"></div>
+
+                    <!-- Replied -->
+                    <div class="kanban-column col-replied" data-status="Replied">
+                        <div class="kanban-header">
+                            <h3><i class="fas fa-reply" style="color:var(--cyan)"></i> Replied</h3>
+                            <span class="count" id="count-replied">0</span>
+                        </div>
+                        <div class="kanban-body"></div>
                     </div>
-                    <div class="kanban-column col-qualified">
-                        <div class="kanban-header">Qualified <span id="count-qualified" class="badge-count">0</span></div>
-                        <div class="kanban-body dropzone" ondragover="allowDrop(event)" ondrop="drop(event, 'Qualified')"></div>
+
+                    <!-- Qualified -->
+                    <div class="kanban-column col-qualified" data-status="Qualified">
+                        <div class="kanban-header">
+                            <h3><i class="fas fa-check-circle" style="color:var(--success)"></i> Qualified</h3>
+                            <span class="count" id="count-qualified">0</span>
+                        </div>
+                        <div class="kanban-body"></div>
                     </div>
-                    <div class="kanban-column col-closed">
-                        <div class="kanban-header">Closed <span id="count-closed" class="badge-count">0</span></div>
-                        <div class="kanban-body dropzone" ondragover="allowDrop(event)" ondrop="drop(event, 'Closed')"></div>
+
+                    <!-- Closed -->
+                    <div class="kanban-column col-closed" data-status="Closed">
+                        <div class="kanban-header">
+                            <h3><i class="fas fa-star" style="color:#a855f7"></i> Closed</h3>
+                            <span class="count" id="count-closed">0</span>
+                        </div>
+                        <div class="kanban-body"></div>
                     </div>
                 </div>
             </div>

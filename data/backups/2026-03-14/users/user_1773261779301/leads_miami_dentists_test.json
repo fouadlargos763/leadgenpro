@@ -1,0 +1,112 @@
+[
+  {
+    "id": "mock_1773369558454_0",
+    "name": "Mock Business 1",
+    "phone": "555-0100",
+    "address": "123 Mock St, Miami",
+    "email": "contact0@mock0.com",
+    "website": "https://mockbusiness0.com",
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+0",
+    "category": "Dentists",
+    "hasWebsite": true
+  },
+  {
+    "id": "mock_1773369558455_1",
+    "name": "Mock Business 2",
+    "phone": "555-0101",
+    "address": "123 Mock St, Miami",
+    "email": null,
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+1",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_2",
+    "name": "Mock Business 3",
+    "phone": "555-0102",
+    "address": "123 Mock St, Miami",
+    "email": "contact2@mock2.com",
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+2",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_3",
+    "name": "Mock Business 4",
+    "phone": "555-0103",
+    "address": "123 Mock St, Miami",
+    "email": null,
+    "website": "https://mockbusiness3.com",
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+3",
+    "category": "Dentists",
+    "hasWebsite": true
+  },
+  {
+    "id": "mock_1773369558455_4",
+    "name": "Mock Business 5",
+    "phone": "555-0104",
+    "address": "123 Mock St, Miami",
+    "email": "contact4@mock4.com",
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+4",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_5",
+    "name": "Mock Business 6",
+    "phone": "555-0105",
+    "address": "123 Mock St, Miami",
+    "email": null,
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+5",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_6",
+    "name": "Mock Business 7",
+    "phone": "555-0106",
+    "address": "123 Mock St, Miami",
+    "email": "contact6@mock6.com",
+    "website": "https://mockbusiness6.com",
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+6",
+    "category": "Dentists",
+    "hasWebsite": true
+  },
+  {
+    "id": "mock_1773369558455_7",
+    "name": "Mock Business 8",
+    "phone": "555-0107",
+    "address": "123 Mock St, Miami",
+    "email": null,
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+7",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_8",
+    "name": "Mock Business 9",
+    "phone": "555-0108",
+    "address": "123 Mock St, Miami",
+    "email": "contact8@mock8.com",
+    "website": null,
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+8",
+    "category": "Dentists",
+    "hasWebsite": false
+  },
+  {
+    "id": "mock_1773369558455_9",
+    "name": "Mock Business 10",
+    "phone": "555-0109",
+    "address": "123 Mock St, Miami",
+    "email": null,
+    "website": "https://mockbusiness9.com",
+    "googleMapsUrl": "https://maps.google.com/?q=mock+business+9",
+    "category": "Dentists",
+    "hasWebsite": true
+  }
+]

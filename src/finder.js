@@ -3,9 +3,14 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const client = new ApifyClient({
-    token: process.env.APIFY_TOKEN || process.env.APIFY_API_KEY,
-});
+let client = null;
+const apifyToken = process.env.APIFY_TOKEN || process.env.APIFY_API_KEY;
+if (apifyToken && apifyToken !== 'your_apify_token_here') {
+    client = new ApifyClient({ token: apifyToken });
+    console.log('[Apify] Discovery client initialized.');
+} else {
+    console.warn('[Apify Warning] No APIFY_TOKEN found. The discovery engine will use mock data.');
+}
 
 /**
  * Modular function to find businesses without websites using the official apify/google-maps-scraper actor.
@@ -19,6 +24,10 @@ async function findBusinessesWithoutWebsites(category = "marketing agencies", lo
         searchStringsArray: [`${category} in ${location}`],
         maxCrawledPlaces: maxResults,
     };
+
+    if (!client) {
+        throw new Error('APIFY_TOKEN is missing. Falling back to mock data...');
+    }
 
     try {
         console.log("[Apify] Running official Google Maps Scraper actor (Deep Search)...");
