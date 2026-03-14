@@ -77,7 +77,7 @@
             <header class="top-header">
                 <div class="header-search">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="clients-search" placeholder="Search clients by name, email, notes…" oninput="filterClients(this.value)">
+                    <input type="text" id="clients-search" placeholder="Search clients by name, email, notes…">
                 </div>
             </header>
             <div class="content-body">
@@ -85,10 +85,10 @@
                     <div class="table-header">
                         <h3>All Clients / Contacts</h3>
                         <div class="table-filters">
-                            <button id="btn-add-client" class="btn btn-primary" onclick="openAddClientModal()">
+                            <button id="btn-add-client" class="btn btn-primary">
                                 <i class="fas fa-plus"></i> Add Manual Client
                             </button>
-                            <button id="btn-refresh-clients" class="btn btn-outline" onclick="refreshClients()">
+                            <button id="btn-refresh-clients" class="btn btn-outline">
                                 <i class="fas fa-sync-alt"></i> Refresh
                             </button>
                         </div>
@@ -121,7 +121,7 @@
         <div class="modal-content" style="max-width: 460px;">
             <div class="modal-header">
                 <h3><i class="fas fa-edit" style="color: var(--primary); margin-right: 8px;"></i> Edit Client</h3>
-                <button class="close-modal" onclick="closeClientModal()">&times;</button>
+                <button id="btn-close-edit-modal" class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="edit-client-id">
@@ -151,8 +151,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; gap: 1rem;">
-                <button class="btn btn-secondary" onclick="closeClientModal()" type="button">Cancel</button>
-                <button id="btn-save-client-edit" class="btn btn-primary" onclick="saveClientEdit()" type="button">
+                <button id="btn-cancel-edit" class="btn btn-secondary" type="button">Cancel</button>
+                <button id="btn-save-client-edit" class="btn btn-primary" type="button">
                     <i class="fas fa-save"></i> Save
                 </button>
             </div>
@@ -164,7 +164,7 @@
         <div class="modal-content" style="max-width: 480px;">
             <div class="modal-header">
                 <h3><i class="fas fa-user-plus" style="color: var(--primary); margin-right: 8px;"></i> Add Manual Client</h3>
-                <button class="close-modal" onclick="closeAddClientModal()">&times;</button>
+                <button id="btn-close-add-modal" class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -198,8 +198,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="display: flex; gap: 1rem;">
-                <button class="btn btn-secondary" onclick="closeAddClientModal()" type="button">Cancel</button>
-                <button id="btn-create-client" class="btn btn-primary" onclick="submitAddClient()" type="button">
+                <button id="btn-cancel-add" class="btn btn-secondary" type="button">Cancel</button>
+                <button id="btn-create-client" class="btn btn-primary" type="button">
                     <i class="fas fa-user-plus"></i> Create Client
                 </button>
             </div>
@@ -208,20 +208,5 @@
 
     <script src="app.js"></script>
     <script src="clients.js"></script>
-    <script>
-        // Refresh button with spin animation
-        function refreshClients() {
-            const btn = document.getElementById('btn-refresh-clients');
-            if (btn) {
-                const icon = btn.querySelector('i');
-                if (icon) icon.style.animation = 'spin 0.8s linear infinite';
-                loadClients().finally(() => {
-                    if (icon) icon.style.animation = '';
-                });
-            } else {
-                loadClients();
-            }
-        }
-    </script>
 </body>
 </html>
