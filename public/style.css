@@ -840,4 +840,22 @@ tr:last-child td {
     font-size: 0.8rem;
     color: var(--text-muted);
     line-height: 1.4;
-}
+}
+
+/* ── Utility: small buttons ── */
+.btn-sm {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.78rem;
+    border-radius: 7px;
+}
+
+/* ── Spin animation (used by Refresh button) ── */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+
